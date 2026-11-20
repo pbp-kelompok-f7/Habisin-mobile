@@ -6,6 +6,24 @@ void main() {
   final friedRice = sampleRecipes[1];
   final omelet = sampleRecipes[2];
 
+  test('reads saved Django recipes without requiring cooking time', () {
+    final recipe = MealRecipe.fromJson({
+      'id': 'mealdb:123',
+      'name': 'Chicken soup',
+      'ingredients': ['chicken', 'carrot'],
+      'image_url': 'https://example.org/soup.png',
+      'saved': true,
+    });
+    expect(recipe.id, 'mealdb:123');
+    expect(recipe.ingredients, ['chicken', 'carrot']);
+    expect(recipe.minutes, isNull);
+    expect(recipe.imageUrl, 'https://example.org/soup.png');
+    expect(
+      () => MealRecipe.fromJson({'id': 'mealdb:123', 'name': 'Chicken soup'}),
+      throwsFormatException,
+    );
+  });
+
   test('replacing or clearing a slot recomputes the weekly shopping list', () {
     final plan = WeeklyPlan();
     plan.assign(0, MealSlot.lunch, soup);
