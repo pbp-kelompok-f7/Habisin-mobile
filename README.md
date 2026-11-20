@@ -57,6 +57,32 @@ Untuk checkpoint Meals Planner, pengguna dapat melihat katalog resep publik dan 
 
 Figma: **Coming soon.**
 
+## Daftar Endpoint Django REST Framework — Saved Meals & History (Ahsan Rifqi Prasetyo)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| `GET` | `/saved-meals/api/overview/` | Mengambil daftar `saved_meals`, `history_meals`, dan `metrics` (mendukung filter `?q=`, `?time_filter=`, `?calorie_filter=`). |
+| `GET` | `/saved-meals/api/metrics/` | Mengambil 5 metrik dampak pengurangan limbah makanan & nutrisi dari seluruh `HISTORY` milik pengguna. |
+| `GET`, `POST` | `/saved-meals/api/meals/` | `GET`: daftar meal (`?status=SAVED\|HISTORY`, filter). `POST`: menambah `SAVED` meal manual dengan estimasi nutrisi otomatis via OpenFoodFacts. |
+| `GET`, `PATCH`, `DELETE` | `/saved-meals/api/meals/<meal_id>/` | Mengambil detail, memperbarui sebagian (auto-scale nutrisi saat porsi berubah), atau menghapus item meal milik pengguna. |
+| `POST` | `/saved-meals/api/meals/from-recipe/<recipe_id>/` | Menambahkan resep dari TheMealDB ke `SAVED` secara idempotent. |
+| `POST` | `/saved-meals/api/meals/<meal_id>/complete/` | Memindahkan item `SAVED` ke `HISTORY` (atau mengakumulasi porsi & nutrisi jika resep identik sudah ada di `HISTORY`). |
+| `GET` | `/saved-meals/api/history/` | Mengambil daftar masakan berstatus `HISTORY` (mendukung filter) beserta `metrics`. |
+| `PATCH`, `DELETE` | `/saved-meals/api/history/<meal_id>/` | Mengedit porsi (auto-scale nutrisi) dan catatan pribadi, atau menghapus entri dari `HISTORY`. |
+
+## ⚙️ How to Run
+
+```powershell
+flutter pub get
+flutter run
+```
+
+Untuk verifikasi analisis statis dan pengujian unit/widget:
+
+```powershell
+flutter analyze
+flutter test
+```
 ## Menjalankan checkpoint Meals Planner
 
 Jalankan dari folder Flutter:
@@ -72,7 +98,12 @@ Di beranda, pilih **Buka Meals Planner**, pilih hari dan tambah resep untuk sara
 
 | Metode | Path Django | Akses | Respons |
 | --- | --- | --- | --- |
-| GET | `/meals-planner/api/recipes/` | Publik | Objek `recipes` berisi daftar resep dengan `id`, `name`, `ingredients`, dan `image_url`. |
+| GET | `/api/meals-planner/recipes/` | Publik | Objek `recipes` berisi daftar resep dengan `id`, `name`, `ingredients`, dan `image_url`. |
+| GET | `/api/meals-planner/week/?week=YYYY-MM-DD` | Login | Rencana makan mingguan pengguna. Gunakan tanggal Senin atau hilangkan parameter `week` untuk minggu berjalan di zona waktu Jakarta. |
+| PUT | `/api/meals-planner/menu/YYYY-MM-DD/{slot}/` | Login | Isi atau ganti resep pada slot tersebut dengan body JSON, misalnya `{"recipe":"mealdb:52772"}`. |
+| DELETE | `/api/meals-planner/menu/YYYY-MM-DD/{slot}/` | Login | Hapus menu pada slot tersebut. Kirim permintaan tanpa body. |
+
+Untuk ketiga endpoint pribadi, ambil token melalui `POST /api/auth/login/` lalu sertakan header `Authorization: Token <token>`. Nilai `slot` dapat berupa `breakfast`, `lunch`, atau `dinner`. Saat berhasil, ketiganya mengembalikan HTTP 200 dengan rencana mingguan, progres, dan daftar bahan terbaru. Flutter pada checkpoint ini membaca katalog dan menyimpan perubahan menu di memori aplikasi. URL katalog sebelumnya, `/meals-planner/api/recipes/`, tetap tersedia sebagai alias.
 
 Endpoint DRF memakai katalog TheMealDB yang juga digunakan situs Habisin. Untuk demo dengan data API, jalankan [branch Django checkpoint](https://github.com/pbp-kelompok-f7/Habisin/tree/feature/meals-planner-checkpoint-api) di terminal terpisah. Setelah memasang requirements dan mengatur `.env` lokal sesuai README Django:
 
@@ -81,10 +112,10 @@ python manage.py migrate
 python manage.py runserver 127.0.0.1:8010
 ```
 
-Buka [katalog JSON lokal](http://127.0.0.1:8010/meals-planner/api/recipes/) untuk memeriksa respons. Hubungkan Flutter Web ke katalog dengan:
+Buka [katalog JSON lokal](http://127.0.0.1:8010/api/meals-planner/recipes/) untuk memeriksa respons. Hubungkan Flutter Web ke katalog dengan:
 
 ```sh
-flutter run -d chrome --dart-define=PLANNER_API_URL=http://127.0.0.1:8010/meals-planner/api/recipes/
+flutter run -d chrome --dart-define=PLANNER_API_URL=http://127.0.0.1:8010/api/meals-planner/recipes/
 ```
 
 Untuk emulator Android, pilih device emulator dan ganti host di URL dengan `10.0.2.2`. Tanpa URL API, aplikasi memakai tiga resep contoh dengan foto lokal. Jika API tak dapat dihubungi, pengguna tetap dapat memakai resep contoh atau mencoba memuat katalog lagi.

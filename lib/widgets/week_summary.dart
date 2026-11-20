@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'plan.dart';
-import 'planner_style.dart';
+import 'package:habisin_mobile/models/plan.dart';
 
 class WeekSummary extends StatelessWidget {
   const WeekSummary({super.key, required this.plan});
@@ -10,18 +9,17 @@ class WeekSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final ingredients = plan.ingredients;
     final progress = '${plan.total} dari 21';
-    final headingStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-      color: plannerInk,
-      fontWeight: FontWeight.w700,
-    );
+    final headingStyle = Theme.of(context).textTheme.titleMedium
+        ?.copyWith(color: colors.onSurface, fontWeight: FontWeight.w700);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: plannerLine),
+        border: Border.all(color: colors.outlineVariant),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -38,15 +36,15 @@ class WeekSummary extends StatelessWidget {
               children: [
                 Text(
                   progress,
-                  style: const TextStyle(
-                    color: plannerGreen,
+                  style: TextStyle(
+                    color: colors.primary,
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const Text(
+                Text(
                   'waktu makan terisi',
-                  style: TextStyle(color: plannerMuted),
+                  style: TextStyle(color: colors.onSurfaceVariant),
                 ),
               ],
             ),
@@ -56,12 +54,12 @@ class WeekSummary extends StatelessWidget {
             child: LinearProgressIndicator(
               value: plan.total / 21,
               minHeight: 7,
-              color: plannerGreen,
-              backgroundColor: plannerCream,
+              color: colors.primary,
+              backgroundColor: colors.surface,
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          const Divider(height: 34, color: plannerLine),
+          Divider(height: 34, color: colors.outlineVariant),
           Text('Bahan untuk minggu ini', style: headingStyle),
           const SizedBox(height: 10),
           if (ingredients.isEmpty)
@@ -69,7 +67,7 @@ class WeekSummary extends StatelessWidget {
               plan.total == 0
                   ? 'Pilih menu untuk melihat daftar bahan.'
                   : 'Resep yang dipilih belum mencantumkan bahan.',
-              style: const TextStyle(color: plannerMuted),
+              style: TextStyle(color: colors.onSurfaceVariant),
             )
           else
             Wrap(
@@ -79,7 +77,7 @@ class WeekSummary extends StatelessWidget {
                 for (final ingredient in ingredients)
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: plannerPeach,
+                      color: colors.secondary,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Padding(
@@ -89,7 +87,7 @@ class WeekSummary extends StatelessWidget {
                       ),
                       child: Text(
                         ingredient,
-                        style: const TextStyle(color: plannerInk),
+                        style: TextStyle(color: colors.onSurface),
                       ),
                     ),
                   ),

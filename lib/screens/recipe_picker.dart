@@ -1,54 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'plan.dart';
-
-const _cream = Color(0xFFF8EEDD);
-const _ink = Color(0xFF12372E);
-const _muted = Color(0xFF52685C);
-const _border = Color(0xFFDFD9CB);
-
-class RecipeThumbnail extends StatelessWidget {
-  const RecipeThumbnail({super.key, required this.recipe, this.size = 76});
-
-  final MealRecipe recipe;
-  final double size;
-
-  static const _photos = {
-    'soup': 'soup',
-    'chicken-soup': 'soup',
-    'fried-rice': 'fried-rice',
-    'omelet': 'omelet',
-    'spinach-omelet': 'omelet',
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    final photo = _photos[recipe.id];
-    final imageUri = Uri.tryParse(recipe.imageUrl ?? '');
-    const fallback = ColoredBox(
-      color: _cream,
-      child: Icon(Icons.restaurant_outlined, color: _muted),
-    );
-    Widget image = fallback;
-    if (photo != null) {
-      image = Image.asset('assets/meals/$photo.png', fit: BoxFit.cover);
-    } else if (imageUri != null &&
-        imageUri.hasAuthority &&
-        (imageUri.scheme == 'https' || imageUri.scheme == 'http')) {
-      image = Image.network(
-        imageUri.toString(),
-        fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => fallback,
-      );
-    }
-    return ExcludeSemantics(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(14),
-        child: SizedBox.square(dimension: size, child: image),
-      ),
-    );
-  }
-}
+import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/widgets/recipe_thumbnail.dart';
 
 class RecipePicker extends StatefulWidget {
   const RecipePicker({
@@ -92,12 +44,13 @@ class _RecipePickerState extends State<RecipePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final recipes = widget.recipes.where(_matches).toList();
     return Scaffold(
-      backgroundColor: _cream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: _cream,
-        foregroundColor: _ink,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
         title: const Text('Pilih resep'),
       ),
       body: SafeArea(
@@ -113,14 +66,16 @@ class _RecipePickerState extends State<RecipePicker> {
                 Text(
                   widget.dayLabel,
                   style: Theme.of(context).textTheme.bodyLarge
-                      ?.copyWith(color: _muted),
+                      ?.copyWith(color: colors.onSurfaceVariant),
                 ),
                 Semantics(
                   header: true,
                   child: Text(
                     widget.slotLabel,
-                    style: Theme.of(context).textTheme.headlineMedium
-                        ?.copyWith(color: _ink, fontWeight: FontWeight.w800),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 22),
@@ -152,14 +107,18 @@ class _RecipePickerState extends State<RecipePicker> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        const Icon(Icons.search_off, size: 36, color: _muted),
+                        Icon(
+                          Icons.search_off,
+                          size: 36,
+                          color: colors.onSurfaceVariant,
+                        ),
                         const SizedBox(height: 12),
                         Text(
                           _query.isEmpty
                               ? 'Belum ada resep yang tersedia.'
                               : 'Tidak ada resep yang cocok.',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: _ink),
+                          style: TextStyle(color: colors.onSurface),
                         ),
                         if (_query.isNotEmpty)
                           TextButton(
@@ -194,6 +153,7 @@ class _RecipeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Semantics(
       button: true,
       child: Material(
@@ -201,7 +161,7 @@ class _RecipeOption extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: _border),
+          side: BorderSide(color: colors.outlineVariant),
         ),
         child: InkWell(
           onTap: onTap,
@@ -219,7 +179,7 @@ class _RecipeOption extends StatelessWidget {
                         recipe.name,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: _ink,
+                              color: colors.onSurface,
                               height: 1.2,
                               fontWeight: FontWeight.w700,
                             ),
@@ -228,19 +188,23 @@ class _RecipeOption extends StatelessWidget {
                       if (recipe.minutes != null)
                         Text(
                           '${recipe.minutes} menit',
-                          style: const TextStyle(color: _muted),
+                          style: TextStyle(color: colors.onSurfaceVariant),
                         ),
                       if (recipe.ingredients.isNotEmpty)
                         Text(
                           recipe.ingredients.join(', '),
                           style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: _muted),
+                              ?.copyWith(color: colors.onSurfaceVariant),
                         ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 6),
-                const Icon(Icons.add_circle_outline, color: _ink, size: 20),
+                Icon(
+                  Icons.add_circle_outline,
+                  color: colors.onSurface,
+                  size: 20,
+                ),
               ],
             ),
           ),
