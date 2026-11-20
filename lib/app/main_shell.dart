@@ -7,6 +7,7 @@ import 'package:habisin_mobile/features/home/home_screen.dart';
 import 'package:habisin_mobile/features/planner/screens/planner_screen.dart';
 import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
 
+const _fridgeTab = 0;
 const _recipesTab = 2;
 
 class MainShell extends StatefulWidget {
@@ -42,7 +43,13 @@ class _MainShellState extends State<MainShell> {
         children: [
           tabNavigator(0, const FridgeScreen()),
           tabNavigator(1, BookmarksScreen(store: bookmarks)),
-          tabNavigator(2, const MyHomePage()),
+          tabNavigator(
+            2,
+            MyHomePage(
+              bookmarks: bookmarks,
+              onOpenFridge: () => setState(() => tab = _fridgeTab),
+            ),
+          ),
           tabNavigator(3, PlannerScreen(weeks: weeks)),
           tabNavigator(4, const SavedMealsPage()),
         ],

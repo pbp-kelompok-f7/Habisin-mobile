@@ -24,13 +24,17 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   void initState() {
     super.initState();
     if (store.categories.isNotEmpty) selected = store.categories.first;
+    store.addListener(_refresh);
   }
 
   @override
   void dispose() {
+    store.removeListener(_refresh);
     _search.dispose();
     super.dispose();
   }
+
+  void _refresh() => setState(() {});
 
   void select(BookmarkCategory category) {
     _search.clear();
@@ -58,7 +62,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     return showDialog<String>(
       context: context,
       builder: (_) =>
-          _CategoryNameDialog(title: title, store: store, editing: editing),
+          CategoryNameDialog(title: title, store: store, editing: editing),
     );
   }
 
@@ -432,8 +436,9 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-class _CategoryNameDialog extends StatefulWidget {
-  const _CategoryNameDialog({
+class CategoryNameDialog extends StatefulWidget {
+  const CategoryNameDialog({
+    super.key,
     required this.title,
     required this.store,
     this.editing,
@@ -444,10 +449,10 @@ class _CategoryNameDialog extends StatefulWidget {
   final BookmarkCategory? editing;
 
   @override
-  State<_CategoryNameDialog> createState() => _CategoryNameDialogState();
+  State<CategoryNameDialog> createState() => _CategoryNameDialogState();
 }
 
-class _CategoryNameDialogState extends State<_CategoryNameDialog> {
+class _CategoryNameDialogState extends State<CategoryNameDialog> {
   late final _controller = TextEditingController(text: widget.editing?.name);
   String? error;
 

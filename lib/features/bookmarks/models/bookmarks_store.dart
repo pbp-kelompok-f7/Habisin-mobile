@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:habisin_mobile/shared/models/recipe.dart';
 
 class BookmarkCategory {
@@ -6,9 +7,11 @@ class BookmarkCategory {
 
   String name;
   final List<MealRecipe> recipes;
+
+  bool contains(MealRecipe recipe) => recipes.any((r) => r.id == recipe.id);
 }
 
-class BookmarksStore {
+class BookmarksStore extends ChangeNotifier {
   BookmarksStore(this.categories);
 
   factory BookmarksStore.sample() => BookmarksStore([
@@ -36,17 +39,30 @@ class BookmarksStore {
     return null;
   }
 
+  bool isSaved(MealRecipe recipe) => categories.any((c) => c.contains(recipe));
+
+  void saveTo(MealRecipe recipe, Set<BookmarkCategory> chosen) {
+    for (final category in categories) {
+      category.recipes.removeWhere((r) => r.id == recipe.id);
+      if (chosen.contains(category)) category.recipes.add(recipe);
+    }
+    notifyListeners();
+  }
+
   BookmarkCategory create(String name) {
     final category = BookmarkCategory(name.trim());
     categories.add(category);
+    notifyListeners();
     return category;
   }
 
   void rename(BookmarkCategory category, String name) {
     category.name = name.trim();
+    notifyListeners();
   }
 
   void delete(BookmarkCategory category) {
     categories.remove(category);
+    notifyListeners();
   }
 }

@@ -183,17 +183,18 @@ void main() {
   });
 
   group('Navigation between Home, Saved Meals, and History', () {
-    testWidgets('navigates via home buttons, TabSwitcher and back button', (
+    testWidgets('navigates via bottom nav and TabSwitcher', (
       WidgetTester tester,
     ) async {
+      Finder navItem(String label) => find.descendant(
+            of: find.byType(NavigationBar),
+            matching: find.text(label),
+          );
+
       await tester.pumpWidget(const MyApp());
       expect(find.byType(MyHomePage), findsOneWidget);
-      expect(find.text('Habisin'), findsOneWidget);
 
-      final savedMealsButton = find.widgetWithText(FilledButton, 'Saved Meals');
-      await tester.ensureVisible(savedMealsButton);
-      await tester.pumpAndSettle();
-      await tester.tap(savedMealsButton);
+      await tester.tap(navItem('Saved Meals'));
       await tester.pumpAndSettle();
 
       expect(find.byType(SavedMealsPage), findsOneWidget);
@@ -225,11 +226,11 @@ void main() {
       );
       expect(find.text('Garlic Fried Rice'), findsOneWidget);
 
-      await tester.tap(find.byType(BackButton));
+      await tester.tap(navItem('Recipes'));
       await tester.pumpAndSettle();
 
       expect(find.byType(MyHomePage), findsOneWidget);
-      expect(find.text('Habisin'), findsOneWidget);
+      expect(find.text('Selamat Datang!'), findsOneWidget);
     });
   });
 }
