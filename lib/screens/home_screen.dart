@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../meals_planner/plan.dart';
-import '../meals_planner/planner_screen.dart';
-import '../meals_planner/planner_style.dart';
+import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/screens/planner_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,11 +15,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: plannerCream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: plannerCream,
-        foregroundColor: plannerInk,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
         title: const Text(
           'Habisin',
           style: TextStyle(fontWeight: FontWeight.w800),
@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: EdgeInsets.zero,
                   elevation: 0,
                   clipBehavior: Clip.antiAlias,
-                  color: plannerGreen,
+                  color: colors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(26),
                   ),
@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             const SizedBox(height: 20),
                             FilledButton.icon(
                               style: FilledButton.styleFrom(
-                                backgroundColor: plannerPeach,
-                                foregroundColor: plannerInk,
+                                backgroundColor: colors.secondary,
+                                foregroundColor: colors.onSurface,
                               ),
                               onPressed: () => Navigator.push<void>(
                                 context,

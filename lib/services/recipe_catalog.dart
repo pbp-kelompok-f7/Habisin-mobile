@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'plan.dart';
+import 'package:habisin_mobile/models/plan.dart';
 
 /// Set to the full DRF catalogue URL when running against Django.
 const plannerApiUrl = String.fromEnvironment('PLANNER_API_URL');

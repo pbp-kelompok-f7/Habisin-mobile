@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'plan.dart';
-import 'planner_style.dart';
-import 'recipe_catalog.dart';
-import 'recipe_picker.dart';
-import 'week_strip.dart';
-import 'week_summary.dart';
+import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/screens/recipe_picker.dart';
+import 'package:habisin_mobile/services/recipe_catalog.dart';
+import 'package:habisin_mobile/widgets/meal_card.dart';
+import 'package:habisin_mobile/widgets/week_strip.dart';
+import 'package:habisin_mobile/widgets/week_summary.dart';
 
 class PlannerScreen extends StatefulWidget {
   const PlannerScreen({super.key, required this.weeks});
@@ -72,6 +71,7 @@ class _PlannerScreenState extends State<PlannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final selected = dayOffset(monday, day);
     final caption = DateUtils.isSameDay(selected, DateTime.now())
         ? 'Hari ini · ${shortDate(selected)}'
@@ -81,17 +81,17 @@ class _PlannerScreenState extends State<PlannerScreen> {
       children: [
         Text(
           caption,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
-            color: plannerInk,
+            color: colors.onSurface,
           ),
         ),
         const SizedBox(height: 12),
         for (final slot in MealSlot.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: _MealCard(
+            child: MealCard(
               slot: slot,
               recipe: plan.mealFor(day, slot),
               onChoose: () => chooseMeal(slot),
@@ -101,10 +101,10 @@ class _PlannerScreenState extends State<PlannerScreen> {
       ],
     );
     return Scaffold(
-      backgroundColor: plannerCream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: plannerCream,
-        foregroundColor: plannerInk,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
         title: const Text(
           'Meals Planner',
           style: TextStyle(fontWeight: FontWeight.w800),
@@ -172,104 +172,6 @@ class _PlannerScreenState extends State<PlannerScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MealCard extends StatelessWidget {
-  const _MealCard({
-    required this.slot,
-    required this.recipe,
-    required this.onChoose,
-    required this.onRemove,
-  });
-  final MealSlot slot;
-  final MealRecipe? recipe;
-  final VoidCallback onChoose;
-  final VoidCallback onRemove;
-
-  @override
-  Widget build(BuildContext context) {
-    final meal = recipe;
-    final icon = switch (slot) {
-      MealSlot.breakfast => Icons.wb_twilight_outlined,
-      MealSlot.lunch => Icons.light_mode_outlined,
-      MealSlot.dinner => Icons.dark_mode_outlined,
-    };
-    return Card(
-      margin: EdgeInsets.zero,
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: plannerLine),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: plannerMuted, size: 18),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    slot.label,
-                    style: const TextStyle(
-                      color: plannerMuted,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                if (meal != null)
-                  IconButton(
-                    tooltip: 'Hapus ${slot.label}',
-                    onPressed: onRemove,
-                    icon: const Icon(Icons.close, size: 20),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            if (meal == null)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Tooltip(
-                  message: 'Tambah ${slot.label}',
-                  child: TextButton.icon(
-                    onPressed: onChoose,
-                    icon: const Icon(Icons.add),
-                    label: const Text('Tambah menu'),
-                    style: TextButton.styleFrom(foregroundColor: plannerGreen),
-                  ),
-                ),
-              )
-            else
-              Row(
-                children: [
-                  RecipeThumbnail(recipe: meal, size: 52),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      meal.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: plannerInk,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Ganti ${slot.label}',
-                    child: TextButton(
-                      onPressed: onChoose,
-                      child: const Text('Ganti'),
-                    ),
-                  ),
-                ],
-              ),
-          ],
         ),
       ),
     );

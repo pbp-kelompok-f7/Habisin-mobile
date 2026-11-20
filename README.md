@@ -72,7 +72,12 @@ Di beranda, pilih **Buka Meals Planner**, pilih hari dan tambah resep untuk sara
 
 | Metode | Path Django | Akses | Respons |
 | --- | --- | --- | --- |
-| GET | `/meals-planner/api/recipes/` | Publik | Objek `recipes` berisi daftar resep dengan `id`, `name`, `ingredients`, dan `image_url`. |
+| GET | `/api/meals-planner/recipes/` | Publik | Objek `recipes` berisi daftar resep dengan `id`, `name`, `ingredients`, dan `image_url`. |
+| GET | `/api/meals-planner/week/?week=YYYY-MM-DD` | Login | Rencana makan mingguan pengguna. Gunakan tanggal Senin atau hilangkan parameter `week` untuk minggu berjalan di zona waktu Jakarta. |
+| PUT | `/api/meals-planner/menu/YYYY-MM-DD/{slot}/` | Login | Isi atau ganti resep pada slot tersebut dengan body JSON, misalnya `{"recipe":"mealdb:52772"}`. |
+| DELETE | `/api/meals-planner/menu/YYYY-MM-DD/{slot}/` | Login | Hapus menu pada slot tersebut. Kirim permintaan tanpa body. |
+
+Untuk ketiga endpoint pribadi, ambil token melalui `POST /api/auth/login/` lalu sertakan header `Authorization: Token <token>`. Nilai `slot` dapat berupa `breakfast`, `lunch`, atau `dinner`. Saat berhasil, ketiganya mengembalikan HTTP 200 dengan rencana mingguan, progres, dan daftar bahan terbaru. Flutter pada checkpoint ini membaca katalog dan menyimpan perubahan menu di memori aplikasi. URL katalog sebelumnya, `/meals-planner/api/recipes/`, tetap tersedia sebagai alias.
 
 Endpoint DRF memakai katalog TheMealDB yang juga digunakan situs Habisin. Untuk demo dengan data API, jalankan [branch Django checkpoint](https://github.com/pbp-kelompok-f7/Habisin/tree/feature/meals-planner-checkpoint-api) di terminal terpisah. Setelah memasang requirements dan mengatur `.env` lokal sesuai README Django:
 
@@ -81,10 +86,10 @@ python manage.py migrate
 python manage.py runserver 127.0.0.1:8010
 ```
 
-Buka [katalog JSON lokal](http://127.0.0.1:8010/meals-planner/api/recipes/) untuk memeriksa respons. Hubungkan Flutter Web ke katalog dengan:
+Buka [katalog JSON lokal](http://127.0.0.1:8010/api/meals-planner/recipes/) untuk memeriksa respons. Hubungkan Flutter Web ke katalog dengan:
 
 ```sh
-flutter run -d chrome --dart-define=PLANNER_API_URL=http://127.0.0.1:8010/meals-planner/api/recipes/
+flutter run -d chrome --dart-define=PLANNER_API_URL=http://127.0.0.1:8010/api/meals-planner/recipes/
 ```
 
 Untuk emulator Android, pilih device emulator dan ganti host di URL dengan `10.0.2.2`. Tanpa URL API, aplikasi memakai tiga resep contoh dengan foto lokal. Jika API tak dapat dihubungi, pengguna tetap dapat memakai resep contoh atau mencoba memuat katalog lagi.
