@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:habisin_mobile/models/plan.dart';
 import 'package:habisin_mobile/screens/recipe_picker.dart';
 import 'package:habisin_mobile/services/recipe_catalog.dart';
