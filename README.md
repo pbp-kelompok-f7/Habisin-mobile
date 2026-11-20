@@ -57,6 +57,32 @@ Untuk checkpoint Meals Planner, pengguna dapat melihat katalog resep publik dan 
 
 Figma: **Coming soon.**
 
+## Daftar Endpoint Django REST Framework — Saved Meals & History (Ahsan Rifqi Prasetyo)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| `GET` | `/saved-meals/api/overview/` | Mengambil daftar `saved_meals`, `history_meals`, dan `metrics` (mendukung filter `?q=`, `?time_filter=`, `?calorie_filter=`). |
+| `GET` | `/saved-meals/api/metrics/` | Mengambil 5 metrik dampak pengurangan limbah makanan & nutrisi dari seluruh `HISTORY` milik pengguna. |
+| `GET`, `POST` | `/saved-meals/api/meals/` | `GET`: daftar meal (`?status=SAVED\|HISTORY`, filter). `POST`: menambah `SAVED` meal manual dengan estimasi nutrisi otomatis via OpenFoodFacts. |
+| `GET`, `PATCH`, `DELETE` | `/saved-meals/api/meals/<meal_id>/` | Mengambil detail, memperbarui sebagian (auto-scale nutrisi saat porsi berubah), atau menghapus item meal milik pengguna. |
+| `POST` | `/saved-meals/api/meals/from-recipe/<recipe_id>/` | Menambahkan resep dari TheMealDB ke `SAVED` secara idempotent. |
+| `POST` | `/saved-meals/api/meals/<meal_id>/complete/` | Memindahkan item `SAVED` ke `HISTORY` (atau mengakumulasi porsi & nutrisi jika resep identik sudah ada di `HISTORY`). |
+| `GET` | `/saved-meals/api/history/` | Mengambil daftar masakan berstatus `HISTORY` (mendukung filter) beserta `metrics`. |
+| `PATCH`, `DELETE` | `/saved-meals/api/history/<meal_id>/` | Mengedit porsi (auto-scale nutrisi) dan catatan pribadi, atau menghapus entri dari `HISTORY`. |
+
+## ⚙️ How to Run
+
+```powershell
+flutter pub get
+flutter run
+```
+
+Untuk verifikasi analisis statis dan pengujian unit/widget:
+
+```powershell
+flutter analyze
+flutter test
+```
 ## Menjalankan checkpoint Meals Planner
 
 Jalankan dari folder Flutter:
