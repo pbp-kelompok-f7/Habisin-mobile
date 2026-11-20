@@ -44,11 +44,12 @@ class _PlannerScreenState extends State<PlannerScreen> {
       final result = await fetchPlannerRecipes(Uri.parse(plannerApiUrl));
       if (mounted) setState(() => recipes = result);
     } on Exception {
-      if (mounted)
+      if (mounted) {
         setState(() {
           failed = true;
           recipes = sampleRecipes;
         });
+      }
     } finally {
       if (mounted) setState(() => loading = false);
     }

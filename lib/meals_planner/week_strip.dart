@@ -104,6 +104,7 @@ class WeekStrip extends StatelessWidget {
                           label:
                               '${dayNames[index]}, ${shortDate(date)}${today ? ", hari ini" : ""}',
                           button: true,
+                          onTap: () => onDay(index),
                           child: ExcludeSemantics(
                             child: Material(
                               color: selected ? plannerGreen : Colors.white,
