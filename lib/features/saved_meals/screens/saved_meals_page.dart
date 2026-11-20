@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'package:habisin_mobile/main.dart';
-import 'package:habisin_mobile/shared/widgets/left_drawer.dart';
 import '../models/saved_meal.dart';
 import '../services/saved_meals_endpoints.dart';
-import '../theme/saved_meals_colors.dart';
 import '../widgets/meal_filter_bar.dart';
+import 'history_page.dart';
 import '../widgets/metrics_summary_section.dart';
 import '../widgets/saved_meal_card.dart';
 import '../widgets/saved_meals_tab_switcher.dart';
 
 /// Main Saved Meals page displaying saved recipes, impact metrics, and filters.
 class SavedMealsPage extends StatefulWidget {
-  final Widget? drawer;
   final VoidCallback? onOpenHistory;
   final List<SavedMeal>? initialSavedMeals;
   final List<SavedMeal>? initialHistoryMeals;
 
   const SavedMealsPage({
     super.key,
-    this.drawer,
     this.onOpenHistory,
     this.initialSavedMeals,
     this.initialHistoryMeals,
@@ -59,8 +55,9 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
       widget.onOpenHistory!();
       return;
     }
-    Navigator.of(context, rootNavigator: true)
-        .pushReplacementNamed(AppRoutes.history);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(builder: (_) => const HistoryPage()),
+    );
   }
 
   void _handleMarkDone(SavedMeal meal) {
@@ -101,31 +98,28 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
       calorieFilter: _calorieFilter,
     );
 
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: SavedMealsColors.backgroundCream,
-      appBar: AppBar(
-        title: const Text('Saved Meals'),
-        backgroundColor: SavedMealsColors.brandGreenDark,
-        foregroundColor: Colors.white,
-      ),
-      drawer: widget.drawer ?? const LeftDrawer(currentRoute: AppRoutes.savedMeals),
+      backgroundColor: colors.surface,
+      appBar: AppBar(title: const Text('Habisin')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
+          Text(
             'Saved Meals & History',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
-              color: SavedMealsColors.headingDark,
+              color: colors.onSurface,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Track rescued portions and planned meals',
             style: TextStyle(
               fontSize: 14,
-              color: SavedMealsColors.mutedText,
+              color: colors.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 16),
@@ -152,14 +146,14 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: SavedMealsColors.cardBorder),
+                border: Border.all(color: colors.outlineVariant),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'No meals found.',
                   style: TextStyle(
                     fontSize: 14,
-                    color: SavedMealsColors.mutedText,
+                    color: colors.onSurfaceVariant,
                   ),
                 ),
               ),

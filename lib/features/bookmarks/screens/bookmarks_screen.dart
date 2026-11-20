@@ -134,14 +134,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     final category = selected;
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
-        title: const Text(
-          'Bookmarks',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Habisin')),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,

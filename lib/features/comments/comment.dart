@@ -185,17 +185,14 @@ const sampleCommunityRecipes = [
   ),
 ];
 
-const avatarPalette = <(Color, Color)>[
-  (Color(0xFFF7DFBA), Color(0xFF5B3D12)), // krem
-  (Color(0xFFFFA74F), Color(0xFF3B1F00)), // oranye
-  (Color(0xFF09332C), Color(0xFFF7EDDA)), // hijau tua
-  (Color(0xFF2E4B3C), Color(0xFFF7EDDA)), // hijau
-  (Color(0xFFE8D5F0), Color(0xFF4A2A5C)), // ungu muda
-  (Color(0xFFCFE3F5), Color(0xFF16405F)), // biru muda
-];
-
-(Color, Color) avatarColorsForUser(int userId) {
-  return avatarPalette[userId.abs() % avatarPalette.length];
+(Color, Color) avatarColorsForUser(int userId, ColorScheme colors) {
+  final palette = [
+    (colors.secondary, colors.onSecondary),
+    (colors.primary, colors.onPrimary),
+    (colors.onSurface, colors.surface),
+    (colors.outlineVariant, colors.onSurface),
+  ];
+  return palette[userId.abs() % palette.length];
 }
 
 class CommentsStore {

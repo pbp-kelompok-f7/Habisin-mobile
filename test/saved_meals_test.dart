@@ -183,22 +183,17 @@ void main() {
   });
 
   group('Navigation between Home, Saved Meals, and History', () {
-    testWidgets('navigates smoothly via LeftDrawer and TabSwitcher', (
+    testWidgets('navigates via home buttons, TabSwitcher and back button', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(const MyApp());
       expect(find.byType(MyHomePage), findsOneWidget);
       expect(find.text('Habisin'), findsOneWidget);
 
-      // Home -> Saved Meals via LeftDrawer
-      await tester.tap(find.byTooltip('Open navigation menu'));
+      final savedMealsButton = find.widgetWithText(FilledButton, 'Saved Meals');
+      await tester.ensureVisible(savedMealsButton);
       await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(
-          of: find.byType(Drawer),
-          matching: find.text('Saved Meals'),
-        ),
-      );
+      await tester.tap(savedMealsButton);
       await tester.pumpAndSettle();
 
       expect(find.byType(SavedMealsPage), findsOneWidget);
@@ -230,15 +225,7 @@ void main() {
       );
       expect(find.text('Garlic Fried Rice'), findsOneWidget);
 
-      // History -> Home via LeftDrawer
-      await tester.tap(find.byTooltip('Open navigation menu'));
-      await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(
-          of: find.byType(Drawer),
-          matching: find.text('Home'),
-        ),
-      );
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
 
       expect(find.byType(MyHomePage), findsOneWidget);

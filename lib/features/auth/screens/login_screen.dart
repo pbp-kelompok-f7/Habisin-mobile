@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habisin_mobile/features/fridge/screens/fridge_screen.dart';
 import 'package:habisin_mobile/features/auth/services/auth_service.dart';
-import 'package:habisin_mobile/shared/theme/habisin_colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
   InputDecoration fieldStyle(String hint) => InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: HabisinColors.field,
+        fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
@@ -57,8 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: HabisinColors.background,
+      backgroundColor: colors.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -70,26 +70,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.menu_book, color: HabisinColors.green),
-                        SizedBox(width: 6),
+                        Icon(Icons.menu_book, color: colors.primary),
+                        const SizedBox(width: 6),
                         Text('Habisin',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800,
-                                color: HabisinColors.green)),
+                                color: colors.primary)),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'Welcome Back',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
-                          color: HabisinColors.green),
+                          color: colors.primary),
                     ),
                     const SizedBox(height: 4),
                     const Text('Please enter your details below',
@@ -102,9 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Image.asset(
                           'assets/auth/login_hero.png',
                           fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => const ColoredBox(
-                            color: HabisinColors.chip,
-                            child: Icon(Icons.restaurant, size: 48),
+                          errorBuilder: (_, _, _) => ColoredBox(
+                            color: colors.secondary,
+                            child: const Icon(Icons.restaurant, size: 48),
                           ),
                         ),
                       ),
@@ -160,12 +160,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Text(error!,
-                            style: const TextStyle(color: HabisinColors.danger)),
+                            style: TextStyle(color: colors.error)),
                       ),
                     FilledButton(
                       onPressed: loading ? null : submit,
                       style: FilledButton.styleFrom(
-                        backgroundColor: HabisinColors.green,
+                        backgroundColor: colors.primary,
                         minimumSize: const Size.fromHeight(48),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),

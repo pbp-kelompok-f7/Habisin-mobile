@@ -48,11 +48,7 @@ class _RecipePickerState extends State<RecipePicker> {
     final recipes = widget.recipes.where(_matches).toList();
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
-        title: const Text('Pilih resep'),
-      ),
+      appBar: AppBar(title: const Text('Habisin')),
       body: SafeArea(
         top: false,
         child: Align(

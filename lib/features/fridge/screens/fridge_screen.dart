@@ -41,6 +41,19 @@ class _FridgeScreenState extends State<FridgeScreen> {
     final list = visible;
     return Scaffold(
       backgroundColor: colors.surface,
+      appBar: AppBar(
+        title: const Text('Habisin'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: colors.secondary,
+              child: Text(initial, style: TextStyle(color: colors.onSecondary)),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: items.isEmpty
           ? null
           : FloatingActionButton(
@@ -55,29 +68,10 @@ class _FridgeScreenState extends State<FridgeScreen> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 0),
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.menu_book, color: colors.primary),
-                      const SizedBox(width: 6),
-                      Text('Habisin',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: colors.onSurface)),
-                      const Spacer(),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: colors.secondary,
-                        child: Text(initial,
-                            style: TextStyle(color: colors.onSecondary)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
                   Text('My Fridge',
                       style: TextStyle(
                           fontSize: 28,

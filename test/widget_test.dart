@@ -51,30 +51,17 @@ void main() {
     },
   );
 
-  testWidgets('Home screen renders welcome text and opens navigation drawer', (
+  testWidgets('Home screen shows the Habisin top bar without a drawer', (
     tester,
   ) async {
     await tester.pumpWidget(const MyApp());
-    expect(find.text('Habisin'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Habisin')),
+      findsOneWidget,
+    );
     expect(find.text('Selamat Datang!'), findsOneWidget);
-
-    await tester.tap(find.byTooltip('Open navigation menu'));
-    await tester.pumpAndSettle();
-
-    final drawer = find.byType(Drawer);
-    expect(drawer, findsOneWidget);
-    expect(
-      find.descendant(of: drawer, matching: find.text('Home')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: drawer, matching: find.text('Saved Meals')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: drawer, matching: find.text('History')),
-      findsOneWidget,
-    );
+    expect(find.byTooltip('Open navigation menu'), findsNothing);
+    expect(find.byType(Drawer), findsNothing);
   });
 
   testWidgets('Fridge tab opens the fridge screen', (tester) async {

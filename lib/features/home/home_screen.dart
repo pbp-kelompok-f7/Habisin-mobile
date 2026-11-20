@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habisin_mobile/features/comments/comment.dart';
 import 'package:habisin_mobile/features/comments/comments_screen.dart';
-import 'package:habisin_mobile/main.dart';
-import 'package:habisin_mobile/shared/widgets/left_drawer.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/history_page.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -14,8 +14,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final commentsStore = CommentsStore();
 
-  void openRoute(String route) {
-    Navigator.of(context, rootNavigator: true).pushReplacementNamed(route);
+  void open(Widget page) {
+    Navigator.push<void>(context, MaterialPageRoute(builder: (_) => page));
   }
 
   @override
@@ -23,15 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
-        title: const Text(
-          'Habisin',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ),
-      drawer: const LeftDrawer(currentRoute: AppRoutes.home),
+      appBar: AppBar(title: const Text('Habisin')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
@@ -55,12 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     backgroundColor: colors.onSurface,
                     foregroundColor: colors.surface,
                   ),
-                  onPressed: () => Navigator.push<void>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => CommentsScreen(store: commentsStore),
-                    ),
-                  ),
+                  onPressed: () => open(CommentsScreen(store: commentsStore)),
                   icon: const Icon(Icons.forum_outlined),
                   label: const Text('Buka Community Reviews'),
                 ),
@@ -76,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     backgroundColor: colors.primary,
                     foregroundColor: colors.onPrimary,
                   ),
-                  onPressed: () => openRoute(AppRoutes.savedMeals),
+                  onPressed: () => open(const SavedMealsPage()),
                   icon: const Icon(Icons.bookmark_added_outlined),
                   label: const Text('Saved Meals'),
                 ),
@@ -85,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     foregroundColor: colors.onSurface,
                     side: BorderSide(color: colors.primary),
                   ),
-                  onPressed: () => openRoute(AppRoutes.history),
+                  onPressed: () => open(const HistoryPage()),
                   icon: const Icon(Icons.history),
                   label: const Text('History'),
                 ),

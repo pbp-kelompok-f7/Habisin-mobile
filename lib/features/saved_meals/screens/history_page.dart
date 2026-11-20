@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
-import 'package:habisin_mobile/main.dart';
-import 'package:habisin_mobile/shared/widgets/left_drawer.dart';
 import '../models/saved_meal.dart';
 import '../services/saved_meals_endpoints.dart';
-import '../theme/saved_meals_colors.dart';
 import '../widgets/history_meal_card.dart';
 import '../widgets/meal_filter_bar.dart';
 import '../widgets/metrics_summary_section.dart';
 import '../widgets/saved_meals_tab_switcher.dart';
+import 'saved_meals_page.dart';
 
 /// Cooking History page displaying completed meals, personal notes, and edit actions.
 class HistoryPage extends StatefulWidget {
-  final Widget? drawer;
   final VoidCallback? onOpenSaved;
   final List<SavedMeal>? initialHistoryMeals;
 
   const HistoryPage({
     super.key,
-    this.drawer,
     this.onOpenSaved,
     this.initialHistoryMeals,
   });
@@ -53,8 +49,9 @@ class _HistoryPageState extends State<HistoryPage> {
       widget.onOpenSaved!();
       return;
     }
-    Navigator.of(context, rootNavigator: true)
-        .pushReplacementNamed(AppRoutes.savedMeals);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(builder: (_) => const SavedMealsPage()),
+    );
   }
 
   Future<void> _openEditDialog(SavedMeal meal) async {
@@ -118,31 +115,28 @@ class _HistoryPageState extends State<HistoryPage> {
       calorieFilter: _calorieFilter,
     );
 
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: SavedMealsColors.backgroundCream,
-      appBar: AppBar(
-        title: const Text('Cooking History'),
-        backgroundColor: SavedMealsColors.brandGreenDark,
-        foregroundColor: Colors.white,
-      ),
-      drawer: widget.drawer ?? const LeftDrawer(currentRoute: AppRoutes.history),
+      backgroundColor: colors.surface,
+      appBar: AppBar(title: const Text('Habisin')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
+          Text(
             'Cooking History',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
-              color: SavedMealsColors.headingDark,
+              color: colors.onSurface,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Review completed meals, portions, and personal notes',
             style: TextStyle(
               fontSize: 14,
-              color: SavedMealsColors.mutedText,
+              color: colors.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 16),
@@ -169,14 +163,14 @@ class _HistoryPageState extends State<HistoryPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: SavedMealsColors.cardBorder),
+                border: Border.all(color: colors.outlineVariant),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'No cooking history yet.',
                   style: TextStyle(
                     fontSize: 14,
-                    color: SavedMealsColors.mutedText,
+                    color: colors.onSurfaceVariant,
                   ),
                 ),
               ),
@@ -229,6 +223,7 @@ class _EditHistoryDialogState extends State<_EditHistoryDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return AlertDialog(
       title: const Text('Edit History'),
       content: SingleChildScrollView(
@@ -238,9 +233,9 @@ class _EditHistoryDialogState extends State<_EditHistoryDialog> {
           children: [
             Text(
               widget.meal.recipeName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: SavedMealsColors.mutedText,
+                color: colors.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 12),
@@ -271,7 +266,7 @@ class _EditHistoryDialogState extends State<_EditHistoryDialog> {
         ),
         FilledButton(
           style: FilledButton.styleFrom(
-            backgroundColor: SavedMealsColors.brandGreen,
+            backgroundColor: colors.primary,
           ),
           onPressed: () {
             final parsedPortions =

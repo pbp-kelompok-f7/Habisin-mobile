@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/saved_meals_colors.dart';
 
 /// Identifies which page in the Saved Meals & History module is active.
 enum SavedMealsTab { saved, history }
@@ -52,10 +51,11 @@ class _TabPillButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Material(
       color: isActive
-          ? SavedMealsColors.brandGreen
-          : SavedMealsColors.brandBeige,
+          ? colors.primary
+          : colors.secondary,
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: onTap,
@@ -67,7 +67,7 @@ class _TabPillButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: isActive ? Colors.white : SavedMealsColors.brandGreen,
+              color: isActive ? colors.onPrimary : colors.primary,
             ),
           ),
         ),
