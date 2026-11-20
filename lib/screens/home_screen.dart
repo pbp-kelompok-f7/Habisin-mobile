@@ -1,26 +1,8 @@
 import 'package:flutter/material.dart';
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-feature/comments
-import '../comments/comment.dart';
-import '../comments/comments_screen.dart';
-import '../meals_planner/plan.dart';
-import '../meals_planner/planner_screen.dart';
-import '../meals_planner/planner_style.dart';
-
-import '../main.dart';
-import '../saved_meals/theme/saved_meals_colors.dart';
-import '../widgets/left_drawer.dart';
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
+import 'package:habisin_mobile/main.dart';
 import 'package:habisin_mobile/models/plan.dart';
 import 'package:habisin_mobile/screens/planner_screen.dart';
-main
+import 'package:habisin_mobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -31,77 +13,160 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final weeks = <DateTime, WeeklyPlan>{};
-  final commentsStore = CommentsStore();
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: SavedMealsColors.backgroundCream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        title: const Text('Habisin'),
-        backgroundColor: SavedMealsColors.brandGreenDark,
-        foregroundColor: Colors.white,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
+        title: const Text(
+          'Habisin',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       drawer: const LeftDrawer(currentRoute: AppRoutes.home),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Selamat Datang!',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: SavedMealsColors.headingDark,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 540),
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 0,
+                  clipBehavior: Clip.antiAlias,
+                  color: colors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(26),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'assets/meals/soup.png',
+                        height: 192,
+                        fit: BoxFit.cover,
+                        excludeFromSemantics: true,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Meals Planner',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Susun menu seminggu dan lihat bahan yang perlu disiapkan.',
+                              style: TextStyle(
+                                color: Color(0xFFF2EADB),
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: colors.secondary,
+                                foregroundColor: colors.onSurface,
+                              ),
+                              onPressed: () => Navigator.push<void>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => PlannerScreen(weeks: weeks),
+                                ),
+                              ),
+                              icon: const Icon(Icons.calendar_month_outlined),
+                              label: const Text('Buka Meals Planner'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: SavedMealsColors.brandGreen,
-                    ),
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.savedMeals,
-                    ),
-                    icon: const Icon(Icons.bookmark_added_outlined),
-                    label: const Text('Saved Meals'),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 540),
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 0,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(26),
+                    side: BorderSide(color: colors.outlineVariant),
                   ),
-                  OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: SavedMealsColors.brandGreenDark,
-                      side: const BorderSide(
-                        color: SavedMealsColors.brandGreen,
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Saved Meals & History',
+                          style: TextStyle(
+                            color: colors.onSurface,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Lacak porsi terselamatkan dan riwayat masakan yang sudah dibuat.',
+                          style: TextStyle(
+                            color: colors.onSurfaceVariant,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: colors.primary,
+                                foregroundColor: colors.onPrimary,
+                              ),
+                              onPressed: () => Navigator.of(
+                                context,
+                                rootNavigator: true,
+                              ).pushReplacementNamed(AppRoutes.savedMeals),
+                              icon: const Icon(Icons.bookmark_added_outlined),
+                              label: const Text('Saved Meals'),
+                            ),
+                            OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: colors.onSurface,
+                                side: BorderSide(color: colors.primary),
+                              ),
+                              onPressed: () => Navigator.of(
+                                context,
+                                rootNavigator: true,
+                              ).pushReplacementNamed(AppRoutes.history),
+                              icon: const Icon(Icons.history),
+                              label: const Text('History'),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.history,
-                    ),
-                    icon: const Icon(Icons.history),
-                    label: const Text('History'),
                   ),
-                ],
+                ),
               ),
-            ],
-          ),
-      backgroundColor: colors.surface,
-      body: Center(
-        child: Text(
-          'Habisin',
-          style: TextStyle(
-            color: colors.onSurface,
-            fontSize: 32,
-            fontWeight: FontWeight.w800,
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/saved_meals/screens/saved_meals_page.dart';
 import 'package:habisin_mobile/screens/home_screen.dart';
 import 'package:habisin_mobile/screens/planner_screen.dart';
 
 const _recipesTab = 2;
 const _plannerTab = 3;
+const _savedMealsTab = 4;
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -17,10 +19,17 @@ class _MainShellState extends State<MainShell> {
   final weeks = <DateTime, WeeklyPlan>{};
   final _homeKey = GlobalKey<NavigatorState>();
   final _plannerKey = GlobalKey<NavigatorState>();
+  final _savedMealsKey = GlobalKey<NavigatorState>();
   int tab = _recipesTab;
 
   void selectTab(int index) {
-    setState(() => tab = index == _recipesTab ? _recipesTab : _plannerTab);
+    setState(() {
+      if (index == _recipesTab || index == _savedMealsTab) {
+        tab = index;
+      } else {
+        tab = _plannerTab;
+      }
+    });
   }
 
   Widget tabNavigator(GlobalKey<NavigatorState> key, Widget root) {
@@ -36,12 +45,19 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final stackIndex = switch (tab) {
+      _recipesTab => 0,
+      _savedMealsTab => 2,
+      _ => 1,
+    };
+
     return Scaffold(
       body: IndexedStack(
-        index: tab == _recipesTab ? 0 : 1,
+        index: stackIndex,
         children: [
           tabNavigator(_homeKey, const MyHomePage()),
           tabNavigator(_plannerKey, PlannerScreen(weeks: weeks)),
+          tabNavigator(_savedMealsKey, const SavedMealsPage()),
         ],
       ),
       bottomNavigationBar: NavigationBar(
