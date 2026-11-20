@@ -19,9 +19,13 @@ void main() {
     }
 
     await tester.pumpWidget(const MyApp());
-    await tap(find.text('Buka Meals Planner'));
+    expect(find.text('Habisin'), findsOneWidget);
+    await tap(find.text('Planner'));
+    expect(find.byType(BackButton), findsNothing);
     await tap(find.text('Sen'));
     await tap(find.byTooltip('Tambah Sarapan'));
+    expect(find.byType(BackButton), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
 
     expect(find.text('Habisin'), findsOneWidget);
     expect(find.text('Selamat Datang!'), findsOneWidget);
