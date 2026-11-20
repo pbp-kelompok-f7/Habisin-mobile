@@ -1,30 +1,48 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:habisin_mobile/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Plan breakfast, browse another week, then change and remove it', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(430, 950));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    Future<void> tap(Finder target) async {
+      await tester.ensureVisible(target);
+      await tester.tap(target);
+      await tester.pumpAndSettle();
+    }
+
     await tester.pumpWidget(const MyApp());
+    await tap(find.text('Buka Meals Planner'));
+    await tap(find.text('Sen'));
+    await tap(find.byTooltip('Tambah Sarapan'));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.enterText(find.byType(TextField), 'bayam');
+    await tester.pumpAndSettle();
+    expect(find.text('Sup Ayam Wortel Kentang'), findsNothing);
+    await tap(find.text('Omelet Bayam Keju'));
+    expect(find.text('Omelet Bayam Keju'), findsOneWidget);
+    expect(find.text('1 dari 21'), findsOneWidget);
+    expect(find.text('bayam'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tap(find.byTooltip('Minggu berikutnya'));
+    expect(find.text('0 dari 21'), findsOneWidget);
+    expect(find.text('Omelet Bayam Keju'), findsNothing);
+    await tap(find.byTooltip('Minggu sebelumnya'));
+    await tap(find.text('Sen'));
+    expect(find.text('Omelet Bayam Keju'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tap(find.byTooltip('Ganti Sarapan'));
+    await tap(find.text('Nasi Goreng Sisa Sayur'));
+    expect(find.text('Nasi Goreng Sisa Sayur'), findsOneWidget);
+    expect(find.text('1 dari 21'), findsOneWidget);
+    expect(find.text('bayam'), findsNothing);
+    await tap(find.byTooltip('Hapus Sarapan'));
+    expect(find.byTooltip('Tambah Sarapan'), findsOneWidget);
+    expect(find.text('0 dari 21'), findsOneWidget);
+    expect(find.text('Nasi Goreng Sisa Sayur'), findsNothing);
   });
 }
