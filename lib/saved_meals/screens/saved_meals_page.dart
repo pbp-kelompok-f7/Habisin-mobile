@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+import '../../widgets/left_drawer.dart';
 import '../models/saved_meal.dart';
 import '../services/saved_meals_endpoints.dart';
 import '../theme/saved_meals_colors.dart';
@@ -7,7 +9,6 @@ import '../widgets/meal_filter_bar.dart';
 import '../widgets/metrics_summary_section.dart';
 import '../widgets/saved_meal_card.dart';
 import '../widgets/saved_meals_tab_switcher.dart';
-import 'history_page.dart';
 
 /// Main Saved Meals page displaying saved recipes, impact metrics, and filters.
 class SavedMealsPage extends StatefulWidget {
@@ -58,16 +59,7 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
       widget.onOpenHistory!();
       return;
     }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<void>(
-        builder: (_) => HistoryPage(
-          drawer: widget.drawer,
-          initialSavedMeals: _savedMeals,
-          initialHistoryMeals: _historyMeals,
-        ),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, AppRoutes.history);
   }
 
   void _handleMarkDone(SavedMeal meal) {
@@ -115,7 +107,7 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
         backgroundColor: SavedMealsColors.brandGreenDark,
         foregroundColor: Colors.white,
       ),
-      drawer: widget.drawer,
+      drawer: widget.drawer ?? const LeftDrawer(currentRoute: AppRoutes.savedMeals),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

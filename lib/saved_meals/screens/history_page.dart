@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+import '../../widgets/left_drawer.dart';
 import '../models/saved_meal.dart';
 import '../services/saved_meals_endpoints.dart';
 import '../theme/saved_meals_colors.dart';
@@ -7,20 +9,17 @@ import '../widgets/history_meal_card.dart';
 import '../widgets/meal_filter_bar.dart';
 import '../widgets/metrics_summary_section.dart';
 import '../widgets/saved_meals_tab_switcher.dart';
-import 'saved_meals_page.dart';
 
 /// Cooking History page displaying completed meals, personal notes, and edit actions.
 class HistoryPage extends StatefulWidget {
   final Widget? drawer;
   final VoidCallback? onOpenSaved;
-  final List<SavedMeal>? initialSavedMeals;
   final List<SavedMeal>? initialHistoryMeals;
 
   const HistoryPage({
     super.key,
     this.drawer,
     this.onOpenSaved,
-    this.initialSavedMeals,
     this.initialHistoryMeals,
   });
 
@@ -30,7 +29,6 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   final TextEditingController _searchController = TextEditingController();
-  late List<SavedMeal> _savedMeals;
   late List<SavedMeal> _historyMeals;
   String _query = '';
   String _timeFilter = '';
@@ -39,9 +37,6 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     super.initState();
-    _savedMeals = List<SavedMeal>.from(
-      widget.initialSavedMeals ?? SavedMealsSampleData.initialSavedMeals(),
-    );
     _historyMeals = List<SavedMeal>.from(
       widget.initialHistoryMeals ?? SavedMealsSampleData.initialHistoryMeals(),
     );
@@ -58,16 +53,7 @@ class _HistoryPageState extends State<HistoryPage> {
       widget.onOpenSaved!();
       return;
     }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<void>(
-        builder: (_) => SavedMealsPage(
-          drawer: widget.drawer,
-          initialSavedMeals: _savedMeals,
-          initialHistoryMeals: _historyMeals,
-        ),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, AppRoutes.savedMeals);
   }
 
   Future<void> _openEditDialog(SavedMeal meal) async {
@@ -201,7 +187,7 @@ class _HistoryPageState extends State<HistoryPage> {
         backgroundColor: SavedMealsColors.brandGreenDark,
         foregroundColor: Colors.white,
       ),
-      drawer: widget.drawer,
+      drawer: widget.drawer ?? const LeftDrawer(currentRoute: AppRoutes.history),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
