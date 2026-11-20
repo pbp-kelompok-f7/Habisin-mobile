@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/saved_meal.dart';
-import '../theme/saved_meals_colors.dart';
 
 /// Card widget representing a meal with status `SAVED`.
 class SavedMealCard extends StatelessWidget {
@@ -18,13 +17,14 @@ class SavedMealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Card(
       elevation: 0,
       color: Colors.white,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
-        side: const BorderSide(color: SavedMealsColors.cardBorder),
+        side: BorderSide(color: colors.outlineVariant),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -51,10 +51,10 @@ class SavedMealCard extends StatelessWidget {
                   ),
                   child: Text(
                     '${meal.portionsSaved} portions',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: SavedMealsColors.headingDark,
+                      color: colors.onSurface,
                     ),
                   ),
                 ),
@@ -70,10 +70,10 @@ class SavedMealCard extends StatelessWidget {
                   meal.recipeName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
-                    color: SavedMealsColors.headingDark,
+                    color: colors.onSurface,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -81,13 +81,13 @@ class SavedMealCard extends StatelessWidget {
                   'Ingredients: ${meal.ingredients.isEmpty ? '-' : meal.ingredients}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: SavedMealsColors.mutedText,
+                    color: colors.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Divider(height: 1, color: Color(0xFFF3EFE6)),
+                Divider(height: 1, color: colors.outlineVariant),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -98,26 +98,26 @@ class SavedMealCard extends StatelessWidget {
                         children: [
                           Text(
                             '${meal.cookingTimeMinutes} mins',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: SavedMealsColors.mutedText,
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                           Text(
                             '${meal.caloriesKcal} kcal',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: SavedMealsColors.mutedText,
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                           Text(
                             '${meal.proteinGrams}g protein',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: SavedMealsColors.mutedText,
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -127,8 +127,8 @@ class SavedMealCard extends StatelessWidget {
                       tooltip: 'Delete',
                       onPressed: onDelete,
                       style: IconButton.styleFrom(
-                        backgroundColor: SavedMealsColors.deleteBg,
-                        foregroundColor: SavedMealsColors.deleteFg,
+                        backgroundColor: colors.errorContainer,
+                        foregroundColor: colors.error,
                       ),
                       icon: const Icon(Icons.delete_outline, size: 18),
                     ),
@@ -137,8 +137,8 @@ class SavedMealCard extends StatelessWidget {
                       tooltip: 'Mark as Done',
                       onPressed: onMarkDone,
                       style: IconButton.styleFrom(
-                        backgroundColor: const Color(0xFFE6F4EA),
-                        foregroundColor: SavedMealsColors.brandGreen,
+                        backgroundColor: colors.secondary,
+                        foregroundColor: colors.primary,
                       ),
                       icon: const Icon(Icons.check, size: 18),
                     ),
@@ -176,13 +176,14 @@ class _ImageFallback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Container(
-      color: SavedMealsColors.brandBeige.withValues(alpha: 0.6),
-      child: const Center(
+      color: colors.secondary.withValues(alpha: 0.6),
+      child: Center(
         child: Icon(
           Icons.restaurant_menu_rounded,
           size: 44,
-          color: SavedMealsColors.brandGreen,
+          color: colors.primary,
         ),
       ),
     );

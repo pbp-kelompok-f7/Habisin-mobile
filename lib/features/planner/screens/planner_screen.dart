@@ -103,14 +103,7 @@ class _PlannerScreenState extends State<PlannerScreen> {
     );
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
-        title: const Text(
-          'Meals Planner',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Habisin')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),

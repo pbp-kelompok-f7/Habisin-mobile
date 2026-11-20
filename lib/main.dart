@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/features/saved_meals/screens/history_page.dart';
-import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
 import 'package:habisin_mobile/app/main_shell.dart';
 
-/// Named route constants shared across application modules.
 abstract final class AppRoutes {
   static const String home = '/';
-  static const String savedMeals = '/saved-meals';
-  static const String history = '/history';
 }
 
 void main() {
@@ -19,27 +14,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: const Color(0xFF2E503E),
+      primary: const Color(0xFF2E503E),
+      onPrimary: Colors.white,
+      secondary: const Color(0xFFF8D9A8),
+      onSecondary: const Color(0xFF153D32),
+      surface: const Color(0xFFFAF1E3),
+      onSurface: const Color(0xFF153D32),
+      onSurfaceVariant: const Color(0xFF51685B),
+      outlineVariant: const Color(0xFFDDD8C9),
+    );
     return MaterialApp(
       title: 'Habisin',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2E503E),
-          primary: const Color(0xFF2E503E),
-          onPrimary: Colors.white,
-          secondary: const Color(0xFFF8D9A8),
-          onSecondary: const Color(0xFF153D32),
-          surface: const Color(0xFFFAF1E3),
-          onSurface: const Color(0xFF153D32),
-          onSurfaceVariant: const Color(0xFF51685B),
-          outlineVariant: const Color(0xFFDDD8C9),
+        colorScheme: scheme,
+        appBarTheme: AppBarTheme(
+          backgroundColor: scheme.primary,
+          foregroundColor: scheme.onPrimary,
         ),
         useMaterial3: true,
       ),
       initialRoute: AppRoutes.home,
       routes: {
         AppRoutes.home: (context) => const MainShell(),
-        AppRoutes.savedMeals: (context) => const SavedMealsPage(),
-        AppRoutes.history: (context) => const HistoryPage(),
       },
     );
   }

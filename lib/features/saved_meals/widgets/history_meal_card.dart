@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/saved_meal.dart';
-import '../theme/saved_meals_colors.dart';
 
 /// Card widget representing a completed meal entry with status `HISTORY`.
 class HistoryMealCard extends StatelessWidget {
@@ -18,13 +17,14 @@ class HistoryMealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Card(
       elevation: 0,
       color: Colors.white,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: SavedMealsColors.cardBorder),
+        side: BorderSide(color: colors.outlineVariant),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -37,10 +37,10 @@ class HistoryMealCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     meal.recipeName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: SavedMealsColors.headingDark,
+                      color: colors.onSurface,
                     ),
                   ),
                 ),
@@ -51,15 +51,15 @@ class HistoryMealCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: SavedMealsColors.brandBeige,
+                    color: colors.secondary,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
                     '${meal.portionsSaved} portions',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: SavedMealsColors.brandGreen,
+                      color: colors.primary,
                     ),
                   ),
                 ),
@@ -68,18 +68,18 @@ class HistoryMealCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               'Ingredients: ${meal.ingredients.isEmpty ? '-' : meal.ingredients}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: SavedMealsColors.mutedText,
+                color: colors.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               '${meal.caloriesKcal} kcal \u2022 ${meal.proteinGrams}g protein \u2022 ${meal.cookingTimeMinutes} mins',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: SavedMealsColors.brandGreen,
+                color: colors.primary,
               ),
             ),
             const SizedBox(height: 10),
@@ -87,9 +87,9 @@ class HistoryMealCard extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFFFDFBF7),
+                color: colors.surface,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: SavedMealsColors.cardBorder),
+                border: Border.all(color: colors.outlineVariant),
               ),
               child: Text(
                 meal.notes.isEmpty ? 'No personal notes yet.' : meal.notes,
@@ -98,8 +98,8 @@ class HistoryMealCard extends StatelessWidget {
                   fontStyle:
                       meal.notes.isEmpty ? FontStyle.italic : FontStyle.normal,
                   color: meal.notes.isEmpty
-                      ? SavedMealsColors.mutedText
-                      : SavedMealsColors.headingDark,
+                      ? colors.onSurfaceVariant
+                      : colors.onSurface,
                 ),
               ),
             ),
@@ -111,8 +111,8 @@ class HistoryMealCard extends StatelessWidget {
                   tooltip: 'Edit Note & Portions',
                   onPressed: onEdit,
                   style: IconButton.styleFrom(
-                    backgroundColor: SavedMealsColors.editBg,
-                    foregroundColor: SavedMealsColors.editFg,
+                    backgroundColor: colors.secondary,
+                    foregroundColor: colors.onSecondary,
                   ),
                   icon: const Icon(Icons.edit_outlined, size: 18),
                 ),
@@ -121,8 +121,8 @@ class HistoryMealCard extends StatelessWidget {
                   tooltip: 'Delete from History',
                   onPressed: onDelete,
                   style: IconButton.styleFrom(
-                    backgroundColor: SavedMealsColors.deleteBg,
-                    foregroundColor: SavedMealsColors.deleteFg,
+                    backgroundColor: colors.errorContainer,
+                    foregroundColor: colors.error,
                   ),
                   icon: const Icon(Icons.delete_outline, size: 18),
                 ),

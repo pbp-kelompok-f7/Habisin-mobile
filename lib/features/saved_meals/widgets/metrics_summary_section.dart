@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/saved_meal.dart';
-import '../theme/saved_meals_colors.dart';
 
 /// Displays the 3 summary cards for rescued portions, completed recipes, and nutrition.
 class MetricsSummarySection extends StatelessWidget {
@@ -14,6 +13,7 @@ class MetricsSummarySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth >= 720;
@@ -26,10 +26,10 @@ class MetricsSummarySection extends StatelessWidget {
               children: [
                 Text(
                   '${metrics.totalPortions}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.w800,
-                    color: SavedMealsColors.headingDark,
+                    color: colors.onSurface,
                     height: 1.0,
                   ),
                 ),
@@ -37,9 +37,9 @@ class MetricsSummarySection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     '\u00b1 ${metrics.totalWeight} kg of ingredients saved',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: SavedMealsColors.mutedText,
+                      color: colors.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -51,10 +51,10 @@ class MetricsSummarySection extends StatelessWidget {
             title: 'Recipes completed',
             child: Text(
               '${metrics.recipesFinished}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.w800,
-                color: SavedMealsColors.headingDark,
+                color: colors.onSurface,
                 height: 1.0,
               ),
             ),
@@ -68,18 +68,18 @@ class MetricsSummarySection extends StatelessWidget {
               children: [
                 Text(
                   '${metrics.totalProtein}g',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
-                    color: SavedMealsColors.headingDark,
+                    color: colors.onSurface,
                   ),
                 ),
                 Text(
                   '${metrics.totalCalories}kcal',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
-                    color: SavedMealsColors.headingDark,
+                    color: colors.onSurface,
                   ),
                 ),
               ],
@@ -129,13 +129,14 @@ class _MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: SavedMealsColors.cardBorder),
+        border: Border.all(color: colors.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,10 +144,10 @@ class _MetricCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: SavedMealsColors.headingDark,
+              color: colors.onSurface,
             ),
           ),
           const SizedBox(height: 12),

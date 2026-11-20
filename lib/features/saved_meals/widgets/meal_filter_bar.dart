@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/saved_meal.dart';
-import '../theme/saved_meals_colors.dart';
 
 /// Applies the same search, time, and calorie filters as Django's `_filter_user_meals`.
 List<SavedMeal> filterMeals(
@@ -64,7 +63,11 @@ class MealFilterBar extends StatelessWidget {
     required this.onCalorieFilterChanged,
   });
 
-  InputDecoration _pillDecoration({String? hintText, Widget? prefixIcon}) {
+  InputDecoration _pillDecoration(
+    ColorScheme colors, {
+    String? hintText,
+    Widget? prefixIcon,
+  }) {
     return InputDecoration(
       hintText: hintText,
       prefixIcon: prefixIcon,
@@ -74,16 +77,16 @@ class MealFilterBar extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(999),
-        borderSide: const BorderSide(color: SavedMealsColors.inputBorder),
+        borderSide: BorderSide(color: colors.outlineVariant),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(999),
-        borderSide: const BorderSide(color: SavedMealsColors.inputBorder),
+        borderSide: BorderSide(color: colors.outlineVariant),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(999),
-        borderSide: const BorderSide(
-          color: SavedMealsColors.brandGreen,
+        borderSide: BorderSide(
+          color: colors.primary,
           width: 1.5,
         ),
       ),
@@ -92,17 +95,19 @@ class MealFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Column(
       children: [
         TextField(
           controller: searchController,
           onChanged: onSearchChanged,
           decoration: _pillDecoration(
+            colors,
             hintText: 'Search meals / ingredients...',
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.search,
               size: 18,
-              color: SavedMealsColors.mutedText,
+              color: colors.onSurfaceVariant,
             ),
           ),
         ),
@@ -113,7 +118,7 @@ class MealFilterBar extends StatelessWidget {
               child: DropdownButtonFormField<String>(
                 initialValue: timeFilter,
                 isExpanded: true,
-                decoration: _pillDecoration(),
+                decoration: _pillDecoration(colors),
                 items: const [
                   DropdownMenuItem(value: '', child: Text('All Times')),
                   DropdownMenuItem(
@@ -137,7 +142,7 @@ class MealFilterBar extends StatelessWidget {
               child: DropdownButtonFormField<String>(
                 initialValue: calorieFilter,
                 isExpanded: true,
-                decoration: _pillDecoration(),
+                decoration: _pillDecoration(colors),
                 items: const [
                   DropdownMenuItem(value: '', child: Text('All Calories')),
                   DropdownMenuItem(

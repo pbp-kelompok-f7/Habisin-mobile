@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'comment.dart';
 import 'comments_api.dart';
 
-const _commentLikeOrange = Color(0xFFF0531C);
-const _commentInputBg = Color(0xFFF7EDDA);
-const _commentInputBorder = Color(0xFFECDCC0);
-const _commentAlertBg = Color(0xFFFDE3D8);
-const _commentAlertFg = Color(0xFF8A2B0B);
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({
@@ -198,14 +193,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.onSurface,
-        title: const Text(
-          'Community Reviews',
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Habisin')),
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -287,13 +275,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: _commentAlertBg,
+                        color: colors.errorContainer,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         _errorMessage!,
-                        style: const TextStyle(
-                          color: _commentAlertFg,
+                        style: TextStyle(
+                          color: colors.onErrorContainer,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -341,20 +329,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 ),
                                 decoration: InputDecoration(
                                   hintText: 'Share your tips or ingredient variations...',
-                                  hintStyle: const TextStyle(
-                                    color: Color(0xFF8A8A7F),
+                                  hintStyle: TextStyle(
+                                    color: colors.onSurfaceVariant,
                                   ),
                                   counterText: '',
                                   filled: true,
-                                  fillColor: _commentInputBg,
+                                  fillColor: colors.surface,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 12,
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: _commentInputBorder,
+                                    borderSide: BorderSide(
+                                      color: colors.outlineVariant,
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -374,10 +362,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   style: FilledButton.styleFrom(
                                     backgroundColor: hasDraft
                                         ? colors.onSurface
-                                        : const Color(0xFFE8DCC3),
+                                        : colors.secondary,
                                     foregroundColor: hasDraft
-                                        ? _commentInputBg
-                                        : const Color(0xFF7C7462),
+                                        ? colors.surface
+                                        : colors.onSurfaceVariant,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 22,
                                       vertical: 12,
@@ -509,10 +497,10 @@ class _RecipeSelectorHeader extends StatelessWidget {
                     selected: recipes[i].recipeId == selected.recipeId,
                     selectedColor: colors.primary,
                     backgroundColor: colors.surface,
-                    checkmarkColor: Colors.white,
+                    checkmarkColor: colors.onPrimary,
                     labelStyle: TextStyle(
                       color: recipes[i].recipeId == selected.recipeId
-                          ? Colors.white
+                          ? colors.onPrimary
                           : colors.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
@@ -590,7 +578,7 @@ class _CommentItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final likeColor = comment.isLiked ? _commentLikeOrange : colors.onSurface;
+    final likeColor = comment.isLiked ? colors.error : colors.onSurface;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -621,9 +609,9 @@ class _CommentItemCard extends StatelessWidget {
                     ),
                     Text(
                       comment.timeAgo,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: Color(0xFF7C8C80),
+                        color: colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -631,10 +619,10 @@ class _CommentItemCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   comment.content,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     height: 1.5,
-                    color: Color(0xFF2B3D36),
+                    color: colors.onSurface,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -683,8 +671,8 @@ class _CommentItemCard extends StatelessWidget {
                         key: Key('delete-comment-${comment.id}'),
                         borderRadius: BorderRadius.circular(8),
                         onTap: onDelete,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 4,
                             vertical: 4,
                           ),
@@ -692,7 +680,7 @@ class _CommentItemCard extends StatelessWidget {
                             'Delete',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Color(0xFF7C8C80),
+                              color: colors.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -720,8 +708,8 @@ class _UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final (bg, fg) = isCurrentUser
-        ? (const Color(0xFFB6E3F4), colors.onSurface)
-        : avatarColorsForUser(user.id);
+        ? (colors.secondary, colors.onSecondary)
+        : avatarColorsForUser(user.id, colors);
     return ExcludeSemantics(
       child: Container(
         width: 40,

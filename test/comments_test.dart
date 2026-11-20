@@ -44,6 +44,11 @@ void main() {
     }
 
     await tester.pumpWidget(const MyApp());
+    await tester.scrollUntilVisible(
+      find.text('Buka Community Reviews'),
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tap(find.text('Buka Community Reviews'));
 
     expect(find.text('Comments'), findsOneWidget);
