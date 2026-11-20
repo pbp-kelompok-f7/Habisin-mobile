@@ -53,7 +53,8 @@ class _HistoryPageState extends State<HistoryPage> {
       widget.onOpenSaved!();
       return;
     }
-    Navigator.pushReplacementNamed(context, AppRoutes.savedMeals);
+    Navigator.of(context, rootNavigator: true)
+        .pushReplacementNamed(AppRoutes.savedMeals);
   }
 
   Future<void> _openEditDialog(SavedMeal meal) async {

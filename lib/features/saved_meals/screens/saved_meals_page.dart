@@ -59,7 +59,8 @@ class _SavedMealsPageState extends State<SavedMealsPage> {
       widget.onOpenHistory!();
       return;
     }
-    Navigator.pushReplacementNamed(context, AppRoutes.history);
+    Navigator.of(context, rootNavigator: true)
+        .pushReplacementNamed(AppRoutes.history);
   }
 
   void _handleMarkDone(SavedMeal meal) {
