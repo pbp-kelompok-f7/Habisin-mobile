@@ -13,9 +13,10 @@ class LeftDrawer extends StatelessWidget {
   });
 
   void _navigateTo(BuildContext context, String route) {
+    final rootNavigator = Navigator.of(context, rootNavigator: true);
     Navigator.pop(context);
     if (currentRoute == route) return;
-    Navigator.pushReplacementNamed(context, route);
+    rootNavigator.pushReplacementNamed(route);
   }
 
   @override

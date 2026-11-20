@@ -139,10 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 backgroundColor: colors.primary,
                                 foregroundColor: colors.onPrimary,
                               ),
-                              onPressed: () => Navigator.pushReplacementNamed(
+                              onPressed: () => Navigator.of(
                                 context,
-                                AppRoutes.savedMeals,
-                              ),
+                                rootNavigator: true,
+                              ).pushReplacementNamed(AppRoutes.savedMeals),
                               icon: const Icon(Icons.bookmark_added_outlined),
                               label: const Text('Saved Meals'),
                             ),
@@ -151,10 +151,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 foregroundColor: colors.onSurface,
                                 side: BorderSide(color: colors.primary),
                               ),
-                              onPressed: () => Navigator.pushReplacementNamed(
+                              onPressed: () => Navigator.of(
                                 context,
-                                AppRoutes.history,
-                              ),
+                                rootNavigator: true,
+                              ).pushReplacementNamed(AppRoutes.history),
                               icon: const Icon(Icons.history),
                               label: const Text('History'),
                             ),
