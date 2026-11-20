@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/screens/home_screen.dart';
+import 'package:habisin_mobile/screens/main_shell.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MainShell(),
     );
   }
 }
