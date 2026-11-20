@@ -57,73 +57,14 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> _openEditDialog(SavedMeal meal) async {
-    final portionsController = TextEditingController(
-      text: '${meal.portionsSaved}',
-    );
-    final notesController = TextEditingController(text: meal.notes);
-
-    final confirmed = await showDialog<bool>(
+    final result = await showDialog<({int portions, String notes})>(
       context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Edit History'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                meal.recipeName,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: SavedMealsColors.mutedText,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: portionsController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Portions (auto-scales nutrition)',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: notesController,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Personal Notes',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: SavedMealsColors.brandGreen,
-              ),
-              onPressed: () => Navigator.pop(dialogContext, true),
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
+      builder: (_) => _EditHistoryDialog(meal: meal),
     );
 
-    if (confirmed != true || !mounted) {
-      portionsController.dispose();
-      notesController.dispose();
-      return;
-    }
+    if (result == null || !mounted) return;
 
-    final parsedPortions = int.tryParse(portionsController.text.trim()) ??
-        meal.portionsSaved;
-    final newPortions = parsedPortions < 1 ? 1 : parsedPortions;
+    final newPortions = result.portions < 1 ? 1 : result.portions;
     final oldPortions = meal.portionsSaved < 1 ? 1 : meal.portionsSaved;
 
     // Proportional scaling matching Django's `scale_nutrition` helper.
@@ -132,10 +73,6 @@ class _HistoryPageState extends State<HistoryPage> {
     final scaledProtein =
         ((meal.proteinGrams / oldPortions) * newPortions).round().clamp(0, 99999);
     final scaledWeight = double.parse((newPortions * 0.2).toStringAsFixed(1));
-    final updatedNote = notesController.text.trim();
-
-    portionsController.dispose();
-    notesController.dispose();
 
     // Checkpoint 2 will PATCH SavedMealsEndpoints.historyDetail(meal.id).
     setState(() {
@@ -146,7 +83,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ingredientsSavedKg: scaledWeight,
           caloriesKcal: scaledCalories,
           proteinGrams: scaledProtein,
-          notes: updatedNote,
+          notes: result.notes,
         );
       }
     });
@@ -256,6 +193,100 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _EditHistoryDialog extends StatefulWidget {
+  final SavedMeal meal;
+
+  const _EditHistoryDialog({required this.meal});
+
+  @override
+  State<_EditHistoryDialog> createState() => _EditHistoryDialogState();
+}
+
+class _EditHistoryDialogState extends State<_EditHistoryDialog> {
+  late final TextEditingController _portionsController;
+  late final TextEditingController _notesController;
+
+  @override
+  void initState() {
+    super.initState();
+    _portionsController = TextEditingController(
+      text: '${widget.meal.portionsSaved}',
+    );
+    _notesController = TextEditingController(text: widget.meal.notes);
+  }
+
+  @override
+  void dispose() {
+    _portionsController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit History'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.meal.recipeName,
+              style: const TextStyle(
+                fontSize: 13,
+                color: SavedMealsColors.mutedText,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _portionsController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Portions (auto-scales nutrition)',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _notesController,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                labelText: 'Personal Notes',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: SavedMealsColors.brandGreen,
+          ),
+          onPressed: () {
+            final parsedPortions =
+                int.tryParse(_portionsController.text.trim()) ??
+                    widget.meal.portionsSaved;
+            Navigator.pop(
+              context,
+              (
+                portions: parsedPortions,
+                notes: _notesController.text.trim(),
+              ),
+            );
+          },
+          child: const Text('Save'),
+        ),
+      ],
     );
   }
 }
