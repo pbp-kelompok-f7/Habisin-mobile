@@ -1,26 +1,8 @@
 import 'package:flutter/material.dart';
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-feature/comments
-import '../comments/comment.dart';
-import '../comments/comments_screen.dart';
-import '../meals_planner/plan.dart';
-import '../meals_planner/planner_screen.dart';
-import '../meals_planner/planner_style.dart';
-
-import '../main.dart';
-import '../saved_meals/theme/saved_meals_colors.dart';
-import '../widgets/left_drawer.dart';
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-import 'package:habisin_mobile/models/plan.dart';
-import 'package:habisin_mobile/screens/planner_screen.dart';
-main
+import 'package:habisin_mobile/comments/comment.dart';
+import 'package:habisin_mobile/comments/comments_screen.dart';
+import 'package:habisin_mobile/main.dart';
+import 'package:habisin_mobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -30,77 +12,142 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final weeks = <DateTime, WeeklyPlan>{};
   final commentsStore = CommentsStore();
+
+  void openRoute(String route) {
+    Navigator.of(context, rootNavigator: true).pushReplacementNamed(route);
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: SavedMealsColors.backgroundCream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        title: const Text('Habisin'),
-        backgroundColor: SavedMealsColors.brandGreenDark,
-        foregroundColor: Colors.white,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
+        title: const Text(
+          'Habisin',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       drawer: const LeftDrawer(currentRoute: AppRoutes.home),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Selamat Datang!',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: SavedMealsColors.headingDark,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            Text(
+              'Selamat Datang!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: colors.onSurface,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 20),
+            _HomeCard(
+              title: 'Community Reviews',
+              subtitle: 'Bagikan tips memasak, variasi bahan sisa, dan sukai ulasan pengguna lain.',
+              actions: [
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: colors.onSurface,
+                    foregroundColor: colors.surface,
+                  ),
+                  onPressed: () => Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CommentsScreen(store: commentsStore),
+                    ),
+                  ),
+                  icon: const Icon(Icons.forum_outlined),
+                  label: const Text('Buka Community Reviews'),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                alignment: WrapAlignment.center,
-                children: [
-                  FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: SavedMealsColors.brandGreen,
-                    ),
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.savedMeals,
-                    ),
-                    icon: const Icon(Icons.bookmark_added_outlined),
-                    label: const Text('Saved Meals'),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _HomeCard(
+              title: 'Saved Meals & History',
+              subtitle: 'Lacak porsi terselamatkan dan riwayat masakan yang sudah dibuat.',
+              actions: [
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: colors.primary,
+                    foregroundColor: colors.onPrimary,
                   ),
-                  OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: SavedMealsColors.brandGreenDark,
-                      side: const BorderSide(
-                        color: SavedMealsColors.brandGreen,
-                      ),
-                    ),
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.history,
-                    ),
-                    icon: const Icon(Icons.history),
-                    label: const Text('History'),
+                  onPressed: () => openRoute(AppRoutes.savedMeals),
+                  icon: const Icon(Icons.bookmark_added_outlined),
+                  label: const Text('Saved Meals'),
+                ),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: colors.onSurface,
+                    side: BorderSide(color: colors.primary),
                   ),
-                ],
-              ),
-            ],
+                  onPressed: () => openRoute(AppRoutes.history),
+                  icon: const Icon(Icons.history),
+                  label: const Text('History'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HomeCard extends StatelessWidget {
+  const _HomeCard({
+    required this.title,
+    required this.subtitle,
+    required this.actions,
+  });
+
+  final String title;
+  final String subtitle;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 540),
+        child: Card(
+          margin: EdgeInsets.zero,
+          elevation: 0,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(26),
+            side: BorderSide(color: colors.outlineVariant),
           ),
-      backgroundColor: colors.surface,
-      body: Center(
-        child: Text(
-          'Habisin',
-          style: TextStyle(
-            color: colors.onSurface,
-            fontSize: 32,
-            fontWeight: FontWeight.w800,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: colors.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(spacing: 12, runSpacing: 12, children: actions),
+              ],
+            ),
           ),
         ),
       ),

@@ -7,15 +7,12 @@ import '../saved_meals/theme/saved_meals_colors.dart';
 class LeftDrawer extends StatelessWidget {
   final String currentRoute;
 
-  const LeftDrawer({
-    super.key,
-    required this.currentRoute,
-  });
+  const LeftDrawer({super.key, required this.currentRoute});
 
   void _navigateTo(BuildContext context, String route) {
     Navigator.pop(context);
     if (currentRoute == route) return;
-    Navigator.pushReplacementNamed(context, route);
+    Navigator.of(context, rootNavigator: true).pushReplacementNamed(route);
   }
 
   @override
@@ -26,9 +23,7 @@ class LeftDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(
-              color: SavedMealsColors.brandGreenDark,
-            ),
+            decoration: BoxDecoration(color: SavedMealsColors.brandGreenDark),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
