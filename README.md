@@ -51,12 +51,40 @@ sehari-hari berdasarkan resep yang sudah disimpan.
 
 ## Jenis Pengguna
 
-**TBD.**
+Untuk checkpoint Meals Planner, pengguna dapat melihat katalog resep publik dan menyusun menu tanpa login. Menu disimpan di memori selama aplikasi terbuka.
 
 ## Link Figma
 
 Figma: **Coming soon.**
 
-## ⚙️ How to Run
+## Menjalankan checkpoint Meals Planner
 
-Coming soon.
+Jalankan dari folder Flutter:
+
+```sh
+flutter pub get
+flutter run -d chrome
+```
+
+Di beranda, pilih **Buka Meals Planner**, pilih hari dan tambah resep untuk sarapan, makan siang, atau makan malam. Cari resep lewat nama atau bahan. Mengganti atau menghapus resep akan memperbarui progres dari 21 waktu makan dan daftar bahan minggu tersebut. Pindah minggu lalu kembali untuk melihat menu yang sudah dipilih. Menutup halaman planner tetap menyimpan rencana selama aplikasi terbuka. Memuat ulang aplikasi mengosongkannya.
+
+### Endpoint checkpoint
+
+| Metode | Path Django | Akses | Respons |
+| --- | --- | --- | --- |
+| GET | `/meals-planner/api/recipes/` | Publik | Objek `recipes` berisi daftar resep dengan `id`, `name`, `ingredients`, dan `image_url`. |
+
+Endpoint DRF memakai katalog TheMealDB yang juga digunakan situs Habisin. Untuk demo dengan data API, jalankan [branch Django checkpoint](https://github.com/pbp-kelompok-f7/Habisin/tree/feature/meals-planner-checkpoint-api) di terminal terpisah. Setelah memasang requirements dan mengatur `.env` lokal sesuai README Django:
+
+```sh
+python manage.py migrate
+python manage.py runserver 127.0.0.1:8010
+```
+
+Buka [katalog JSON lokal](http://127.0.0.1:8010/meals-planner/api/recipes/) untuk memeriksa respons. Hubungkan Flutter Web ke katalog dengan:
+
+```sh
+flutter run -d chrome --dart-define=PLANNER_API_URL=http://127.0.0.1:8010/meals-planner/api/recipes/
+```
+
+Untuk emulator Android, pilih device emulator dan ganti host di URL dengan `10.0.2.2`. Tanpa URL API, aplikasi memakai tiga resep contoh dengan foto lokal. Jika API tak dapat dihubungi, pengguna tetap dapat memakai resep contoh atau mencoba memuat katalog lagi.
