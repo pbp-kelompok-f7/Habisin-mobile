@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habisin_mobile/features/fridge/models/fridge_item.dart';
 import 'package:habisin_mobile/features/auth/services/auth_service.dart';
-import 'package:habisin_mobile/shared/theme/habisin_colors.dart';
 
 class FridgeScreen extends StatefulWidget {
   const FridgeScreen({super.key});
@@ -30,7 +29,7 @@ class _FridgeScreenState extends State<FridgeScreen> {
     final item = await showModalBottomSheet<FridgeItem>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: HabisinColors.card,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (_) => AddItemSheet(space: space),
     );
     if (item != null) setState(() => items.add(item));
@@ -38,15 +37,16 @@ class _FridgeScreenState extends State<FridgeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final list = visible;
     return Scaffold(
-      backgroundColor: HabisinColors.background,
+      backgroundColor: colors.surface,
       floatingActionButton: items.isEmpty
           ? null
           : FloatingActionButton(
               onPressed: addItem,
-              backgroundColor: HabisinColors.green,
-              foregroundColor: Colors.white,
+              backgroundColor: colors.primary,
+              foregroundColor: colors.onPrimary,
               tooltip: 'Tambah item',
               child: const Icon(Icons.add),
             ),
@@ -61,28 +61,28 @@ class _FridgeScreenState extends State<FridgeScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.menu_book, color: HabisinColors.green),
+                      Icon(Icons.menu_book, color: colors.primary),
                       const SizedBox(width: 6),
-                      const Text('Habisin',
+                      Text('Habisin',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
-                              color: HabisinColors.green)),
+                              color: colors.onSurface)),
                       const Spacer(),
                       CircleAvatar(
                         radius: 16,
-                        backgroundColor: HabisinColors.chip,
+                        backgroundColor: colors.secondary,
                         child: Text(initial,
-                            style: const TextStyle(color: HabisinColors.green)),
+                            style: TextStyle(color: colors.onSecondary)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  const Text('My Fridge',
+                  Text('My Fridge',
                       style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
-                          color: HabisinColors.green)),
+                          color: colors.onSurface)),
                   const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
@@ -92,8 +92,8 @@ class _FridgeScreenState extends State<FridgeScreen> {
                           label: Text(s.label),
                           selected: space == s,
                           showCheckmark: true,
-                          selectedColor: HabisinColors.chip,
-                          backgroundColor: HabisinColors.card,
+                          selectedColor: colors.secondary,
+                          backgroundColor: Colors.white,
                           onSelected: (_) => setState(() => space = s),
                         ),
                     ],
@@ -105,7 +105,7 @@ class _FridgeScreenState extends State<FridgeScreen> {
                       hintText: 'Search items',
                       prefixIcon: const Icon(Icons.search),
                       filled: true,
-                      fillColor: HabisinColors.card,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
@@ -153,7 +153,7 @@ class _EmptyState extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: Card(
-        color: HabisinColors.card,
+        color: Colors.white,
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
@@ -186,16 +186,17 @@ class _ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final days = item.daysLeft;
     final qty = item.quantity % 1 == 0
         ? item.quantity.toInt().toString()
         : item.quantity.toString();
     String? badge;
-    Color badgeColor = HabisinColors.green;
+    Color badgeColor = colors.primary;
     if (days != null) {
       if (days < 0) {
         badge = 'Kedaluwarsa';
-        badgeColor = HabisinColors.danger;
+        badgeColor = colors.error;
       } else if (days <= 3) {
         badge = days == 0 ? 'Hari ini' : '$days hari lagi';
         badgeColor = Colors.orange.shade800;
@@ -211,12 +212,12 @@ class _ItemTile extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-            color: HabisinColors.danger,
+            color: colors.error,
             borderRadius: BorderRadius.circular(12)),
-        child: const Icon(Icons.delete_outline, color: Colors.white),
+        child: Icon(Icons.delete_outline, color: colors.onError),
       ),
       child: Card(
-        color: HabisinColors.card,
+        color: Colors.white,
         elevation: 0,
         margin: EdgeInsets.zero,
         child: ListTile(
@@ -358,7 +359,6 @@ class _AddItemSheetState extends State<AddItemSheet> {
               FilledButton(
                 onPressed: save,
                 style: FilledButton.styleFrom(
-                    backgroundColor: HabisinColors.green,
                     minimumSize: const Size.fromHeight(48)),
                 child: const Text('Save'),
               ),
