@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'planner_style.dart';
-
 const dayNames = [
   'Senin',
   'Selasa',
@@ -47,6 +45,7 @@ class WeekStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final sunday = dayOffset(monday, 6);
     final start = monday.year == sunday.year
         ? shortDate(monday)
@@ -56,15 +55,15 @@ class WeekStrip extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.date_range_rounded, color: plannerGreen, size: 21),
+            Icon(Icons.date_range_rounded, color: colors.primary, size: 21),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 '$start – ${shortDate(sunday)} ${sunday.year}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: plannerInk,
+                  color: colors.onSurface,
                 ),
               ),
             ),
@@ -107,11 +106,13 @@ class WeekStrip extends StatelessWidget {
                           onTap: () => onDay(index),
                           child: ExcludeSemantics(
                             child: Material(
-                              color: selected ? plannerGreen : Colors.white,
+                              color: selected ? colors.primary : Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                                 side: BorderSide(
-                                  color: selected ? plannerGreen : plannerLine,
+                                  color: selected
+                                      ? colors.primary
+                                      : colors.outlineVariant,
                                 ),
                               ),
                               child: InkWell(
@@ -131,7 +132,7 @@ class WeekStrip extends StatelessWidget {
                                             fontSize: 13,
                                             color: selected
                                                 ? Colors.white
-                                                : plannerMuted,
+                                                : colors.onSurfaceVariant,
                                           ),
                                         ),
                                         Text(
@@ -141,7 +142,7 @@ class WeekStrip extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                             color: selected
                                                 ? Colors.white
-                                                : plannerInk,
+                                                : colors.onSurface,
                                           ),
                                         ),
                                         Container(
@@ -151,8 +152,8 @@ class WeekStrip extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             color: today
                                                 ? (selected
-                                                      ? plannerPeach
-                                                      : plannerGreen)
+                                                      ? colors.secondary
+                                                      : colors.primary)
                                                 : Colors.transparent,
                                           ),
                                         ),
