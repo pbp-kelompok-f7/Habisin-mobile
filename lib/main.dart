@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/saved_meals/screens/history_page.dart';
-import 'package:habisin_mobile/saved_meals/screens/saved_meals_page.dart';
-import 'package:habisin_mobile/screens/main_shell.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/history_page.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
+import 'package:habisin_mobile/app/main_shell.dart';
 
 /// Named route constants shared across application modules.
 abstract final class AppRoutes {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Habisin',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
+        colorScheme: .fromSeed(
           seedColor: const Color(0xFF2E503E),
           primary: const Color(0xFF2E503E),
           onPrimary: Colors.white,

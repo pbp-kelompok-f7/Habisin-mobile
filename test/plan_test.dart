@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/features/planner/models/weekly_plan.dart';
+import 'package:habisin_mobile/shared/models/recipe.dart';
 
 void main() {
   final soup = sampleRecipes[0];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:habisin_mobile/comments/comment.dart';
+import 'package:habisin_mobile/features/comments/comment.dart';
 import 'package:habisin_mobile/main.dart';
 
 void main() {

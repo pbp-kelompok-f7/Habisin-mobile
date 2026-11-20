@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/shared/models/recipe.dart';
 
 class RecipeThumbnail extends StatelessWidget {
   const RecipeThumbnail({super.key, required this.recipe, this.size = 76});

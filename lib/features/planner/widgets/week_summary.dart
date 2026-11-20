@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:habisin_mobile/models/plan.dart';
+import 'package:habisin_mobile/features/planner/models/weekly_plan.dart';
 
 class WeekSummary extends StatelessWidget {
   const WeekSummary({super.key, required this.plan});

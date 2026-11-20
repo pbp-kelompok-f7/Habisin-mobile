@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../main.dart';
-import '../../widgets/left_drawer.dart';
+import 'package:habisin_mobile/main.dart';
+import 'package:habisin_mobile/shared/widgets/left_drawer.dart';
 import '../models/saved_meal.dart';
 import '../services/saved_meals_endpoints.dart';
 import '../theme/saved_meals_colors.dart';

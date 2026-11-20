@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/models/plan.dart';
-import 'package:habisin_mobile/screens/recipe_picker.dart';
-import 'package:habisin_mobile/services/recipe_catalog.dart';
-import 'package:habisin_mobile/widgets/meal_card.dart';
-import 'package:habisin_mobile/widgets/week_strip.dart';
-import 'package:habisin_mobile/widgets/week_summary.dart';
+import 'package:habisin_mobile/features/planner/models/weekly_plan.dart';
+import 'package:habisin_mobile/shared/models/recipe.dart';
+import 'package:habisin_mobile/features/planner/screens/recipe_picker.dart';
+import 'package:habisin_mobile/features/planner/services/recipe_catalog.dart';
+import 'package:habisin_mobile/features/planner/widgets/meal_card.dart';
+import 'package:habisin_mobile/features/planner/widgets/week_strip.dart';
+import 'package:habisin_mobile/features/planner/widgets/week_summary.dart';
 
 class PlannerScreen extends StatefulWidget {
   const PlannerScreen({super.key, required this.weeks});

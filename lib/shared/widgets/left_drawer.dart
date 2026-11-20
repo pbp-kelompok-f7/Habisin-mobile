@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
-import '../saved_meals/theme/saved_meals_colors.dart';
+import 'package:habisin_mobile/main.dart';
+import 'package:habisin_mobile/features/saved_meals/theme/saved_meals_colors.dart';
 
 /// Shared navigation drawer linking the home screen and module pages.
 class LeftDrawer extends StatelessWidget {
   final String currentRoute;
 
-  const LeftDrawer({
-    super.key,
-    required this.currentRoute,
-  });
+  const LeftDrawer({super.key, required this.currentRoute});
 
   void _navigateTo(BuildContext context, String route) {
     final rootNavigator = Navigator.of(context, rootNavigator: true);
@@ -27,9 +24,7 @@ class LeftDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(
-              color: SavedMealsColors.brandGreenDark,
-            ),
+            decoration: BoxDecoration(color: SavedMealsColors.brandGreenDark),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,

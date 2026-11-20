@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../meals_planner/planner_style.dart';
 import 'comment.dart';
 import 'comments_api.dart';
 
@@ -115,9 +114,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
       return;
     }
     if (text.length > 1000) {
-      setState(
-        () => _errorMessage = 'Comment cannot exceed 1000 characters.',
-      );
+      setState(() => _errorMessage = 'Comment cannot exceed 1000 characters.');
       return;
     }
 
@@ -190,6 +187,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final allComments = widget.store.commentsFor(_selectedRecipeId);
     final shownComments = _showAll
         ? allComments
@@ -199,10 +197,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final hasDraft = _commentController.text.trim().isNotEmpty;
 
     return Scaffold(
-      backgroundColor: plannerCream,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: plannerCream,
-        foregroundColor: plannerInk,
+        backgroundColor: colors.surface,
+        foregroundColor: colors.onSurface,
         title: const Text(
           'Community Reviews',
           style: TextStyle(fontWeight: FontWeight.w800),
@@ -250,12 +248,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   // Heading: Comments + count badge
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         'Comments',
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
-                          color: plannerInk,
+                          color: colors.onSurface,
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -267,15 +265,15 @@ class _CommentsScreenState extends State<CommentsScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: plannerPeach,
+                          color: colors.secondary,
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
                           '${allComments.length}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
-                            color: plannerInk,
+                            color: colors.onSurface,
                           ),
                         ),
                       ),
@@ -309,7 +307,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: plannerLine),
+                      border: Border.all(color: colors.outlineVariant),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,12 +318,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const Text(
+                              Text(
                                 'Write a comment',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
-                                  color: plannerInk,
+                                  color: colors.onSurface,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -336,14 +334,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 maxLines: 5,
                                 maxLength: 1000,
                                 onChanged: (_) => setState(() {}),
-                                style: const TextStyle(
-                                  color: plannerInk,
+                                style: TextStyle(
+                                  color: colors.onSurface,
                                   fontSize: 15,
                                   height: 1.45,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      'Share your tips or ingredient variations...',
+                                  hintText: 'Share your tips or ingredient variations...',
                                   hintStyle: const TextStyle(
                                     color: Color(0xFF8A8A7F),
                                   ),
@@ -362,8 +359,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: plannerGreen,
+                                    borderSide: BorderSide(
+                                      color: colors.primary,
                                       width: 2,
                                     ),
                                   ),
@@ -376,7 +373,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                   key: const Key('comment-send-button'),
                                   style: FilledButton.styleFrom(
                                     backgroundColor: hasDraft
-                                        ? plannerInk
+                                        ? colors.onSurface
                                         : const Color(0xFFE8DCC3),
                                     foregroundColor: hasDraft
                                         ? _commentInputBg
@@ -411,12 +408,15 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.6),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: plannerLine),
+                        border: Border.all(color: colors.outlineVariant),
                       ),
-                      child: const Text(
+                      child: Text(
                         'No comments yet. Be the first to share tips for this recipe!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: plannerMuted, fontSize: 15),
+                        style: TextStyle(
+                          color: colors.onSurfaceVariant,
+                          fontSize: 15,
+                        ),
                       ),
                     )
                   else
@@ -437,8 +437,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           key: const Key('view-more-comments-button'),
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            foregroundColor: plannerInk,
-                            side: const BorderSide(color: plannerLine),
+                            foregroundColor: colors.onSurface,
+                            side: BorderSide(color: colors.outlineVariant),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
                               vertical: 12,
@@ -478,22 +478,23 @@ class _RecipeSelectorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: plannerLine),
+        border: Border.all(color: colors.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Pilih Resep untuk Diskusi',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: plannerMuted,
+              color: colors.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 10),
@@ -506,13 +507,13 @@ class _RecipeSelectorHeader extends StatelessWidget {
                   ChoiceChip(
                     label: Text(recipes[i].name),
                     selected: recipes[i].recipeId == selected.recipeId,
-                    selectedColor: plannerGreen,
-                    backgroundColor: plannerCream,
+                    selectedColor: colors.primary,
+                    backgroundColor: colors.surface,
                     checkmarkColor: Colors.white,
                     labelStyle: TextStyle(
                       color: recipes[i].recipeId == selected.recipeId
                           ? Colors.white
-                          : plannerInk,
+                          : colors.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
                     onSelected: (_) => onSelect(recipes[i].recipeId),
@@ -521,7 +522,7 @@ class _RecipeSelectorHeader extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 24, color: plannerLine),
+          Divider(height: 24, color: colors.outlineVariant),
           Row(
             children: [
               ClipRRect(
@@ -534,11 +535,11 @@ class _RecipeSelectorHeader extends StatelessWidget {
                           fit: BoxFit.cover,
                           excludeFromSemantics: true,
                         )
-                      : const ColoredBox(
-                          color: plannerCream,
+                      : ColoredBox(
+                          color: colors.surface,
                           child: Icon(
                             Icons.restaurant_outlined,
-                            color: plannerMuted,
+                            color: colors.onSurfaceVariant,
                           ),
                         ),
                 ),
@@ -550,18 +551,18 @@ class _RecipeSelectorHeader extends StatelessWidget {
                   children: [
                     Text(
                       selected.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: plannerInk,
+                        color: colors.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       selected.subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: plannerMuted,
+                        color: colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -588,13 +589,14 @@ class _CommentItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final likeColor = comment.isLiked ? _commentLikeOrange : plannerInk;
+    final colors = Theme.of(context).colorScheme;
+    final likeColor = comment.isLiked ? _commentLikeOrange : colors.onSurface;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: plannerLine),
+        border: Border.all(color: colors.outlineVariant),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -611,10 +613,10 @@ class _CommentItemCard extends StatelessWidget {
                   children: [
                     Text(
                       comment.user.displayName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: plannerInk,
+                        color: colors.onSurface,
                       ),
                     ),
                     Text(
@@ -716,8 +718,9 @@ class _UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final (bg, fg) = isCurrentUser
-        ? (const Color(0xFFB6E3F4), plannerInk)
+        ? (const Color(0xFFB6E3F4), colors.onSurface)
         : avatarColorsForUser(user.id);
     return ExcludeSemantics(
       child: Container(
@@ -728,7 +731,7 @@ class _UserAvatar extends StatelessWidget {
           color: bg,
           shape: BoxShape.circle,
           border: isCurrentUser
-              ? Border.all(color: plannerInk, width: 2)
+              ? Border.all(color: colors.onSurface, width: 2)
               : null,
         ),
         child: Text(
