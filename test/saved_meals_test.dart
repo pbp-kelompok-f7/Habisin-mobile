@@ -5,6 +5,7 @@ import 'package:habisin_mobile/saved_meals/models/saved_meal.dart';
 import 'package:habisin_mobile/saved_meals/screens/history_page.dart';
 import 'package:habisin_mobile/saved_meals/screens/saved_meals_page.dart';
 import 'package:habisin_mobile/saved_meals/widgets/saved_meals_tab_switcher.dart';
+import 'package:habisin_mobile/screens/home_screen.dart';
 
 Finder _verticalScrollable() => find.byWidgetPredicate(
       (widget) =>
@@ -186,7 +187,8 @@ void main() {
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(const MyApp());
-      expect(find.text('Selamat Datang!'), findsOneWidget);
+      expect(find.byType(MyHomePage), findsOneWidget);
+      expect(find.text('Habisin'), findsOneWidget);
 
       // Home -> Saved Meals via LeftDrawer
       await tester.tap(find.byTooltip('Open navigation menu'));
@@ -239,7 +241,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Selamat Datang!'), findsOneWidget);
+      expect(find.byType(MyHomePage), findsOneWidget);
+      expect(find.text('Habisin'), findsOneWidget);
     });
   });
 }
