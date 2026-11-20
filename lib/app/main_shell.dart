@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:habisin_mobile/features/bookmarks/models/bookmarks_store.dart';
+import 'package:habisin_mobile/features/bookmarks/screens/bookmarks_screen.dart';
+import 'package:habisin_mobile/features/fridge/screens/fridge_screen.dart';
 import 'package:habisin_mobile/features/planner/models/weekly_plan.dart';
 import 'package:habisin_mobile/features/home/home_screen.dart';
 import 'package:habisin_mobile/features/planner/screens/planner_screen.dart';
 import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
 
 const _recipesTab = 2;
-const _plannerTab = 3;
-const _savedMealsTab = 4;
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -17,22 +18,12 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   final weeks = <DateTime, WeeklyPlan>{};
-  final _homeKey = GlobalKey<NavigatorState>();
-  final _plannerKey = GlobalKey<NavigatorState>();
-  final _savedMealsKey = GlobalKey<NavigatorState>();
+  final bookmarks = BookmarksStore.sample();
+  final _navigatorKeys = List.generate(5, (_) => GlobalKey<NavigatorState>());
   int tab = _recipesTab;
 
-  void selectTab(int index) {
-    setState(() {
-      if (index == _recipesTab || index == _savedMealsTab) {
-        tab = index;
-      } else {
-        tab = _plannerTab;
-      }
-    });
-  }
-
-  Widget tabNavigator(GlobalKey<NavigatorState> key, Widget root) {
+  Widget tabNavigator(int index, Widget root) {
+    final key = _navigatorKeys[index];
     return NavigatorPopHandler(
       onPopWithResult: (_) => key.currentState!.maybePop(),
       child: Navigator(
@@ -45,24 +36,20 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final stackIndex = switch (tab) {
-      _recipesTab => 0,
-      _savedMealsTab => 2,
-      _ => 1,
-    };
-
     return Scaffold(
       body: IndexedStack(
-        index: stackIndex,
+        index: tab,
         children: [
-          tabNavigator(_homeKey, const MyHomePage()),
-          tabNavigator(_plannerKey, PlannerScreen(weeks: weeks)),
-          tabNavigator(_savedMealsKey, const SavedMealsPage()),
+          tabNavigator(0, const FridgeScreen()),
+          tabNavigator(1, BookmarksScreen(store: bookmarks)),
+          tabNavigator(2, const MyHomePage()),
+          tabNavigator(3, PlannerScreen(weeks: weeks)),
+          tabNavigator(4, const SavedMealsPage()),
         ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: tab,
-        onDestinationSelected: selectTab,
+        onDestinationSelected: (index) => setState(() => tab = index),
         backgroundColor: colors.surface,
         indicatorColor: colors.primary,
         destinations: [

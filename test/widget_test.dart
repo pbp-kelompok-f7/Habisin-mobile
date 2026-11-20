@@ -76,4 +76,17 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('Fridge tab opens the fridge screen', (tester) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.tap(
+      find.descendant(
+        of: find.byType(NavigationBar),
+        matching: find.text('Fridge'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('My Fridge'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
+  });
 }
