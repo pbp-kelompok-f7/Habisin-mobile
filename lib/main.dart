@@ -23,9 +23,6 @@ class MyApp extends StatelessWidget {
       title: 'Habisin',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF344C3D),
-          secondary: Colors.amber[700],
-        colorScheme: .fromSeed(
           seedColor: const Color(0xFF2E503E),
           primary: const Color(0xFF2E503E),
           onPrimary: Colors.white,
