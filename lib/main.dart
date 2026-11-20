@@ -25,6 +25,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF344C3D),
           secondary: Colors.amber[700],
+        colorScheme: .fromSeed(
+          seedColor: const Color(0xFF2E503E),
+          primary: const Color(0xFF2E503E),
+          onPrimary: Colors.white,
+          secondary: const Color(0xFFF8D9A8),
+          onSecondary: const Color(0xFF153D32),
+          surface: const Color(0xFFFAF1E3),
+          onSurface: const Color(0xFF153D32),
+          onSurfaceVariant: const Color(0xFF51685B),
+          outlineVariant: const Color(0xFFDDD8C9),
         ),
         useMaterial3: true,
       ),
