@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/comments/comment.dart';
-import 'package:habisin_mobile/comments/comments_screen.dart';
+import 'package:habisin_mobile/features/comments/comment.dart';
+import 'package:habisin_mobile/features/comments/comments_screen.dart';
 import 'package:habisin_mobile/main.dart';
-import 'package:habisin_mobile/widgets/left_drawer.dart';
+import 'package:habisin_mobile/shared/widgets/left_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});

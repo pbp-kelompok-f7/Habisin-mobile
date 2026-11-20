@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/models/plan.dart';
-import 'package:habisin_mobile/widgets/recipe_thumbnail.dart';
+import 'package:habisin_mobile/shared/models/recipe.dart';
+import 'package:habisin_mobile/shared/widgets/recipe_thumbnail.dart';
 
 class RecipePicker extends StatefulWidget {
   const RecipePicker({

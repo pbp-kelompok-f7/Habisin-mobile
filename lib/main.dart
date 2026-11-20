@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/saved_meals/screens/history_page.dart';
-import 'package:habisin_mobile/saved_meals/screens/saved_meals_page.dart';
-import 'package:habisin_mobile/screens/main_shell.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/history_page.dart';
+import 'package:habisin_mobile/features/saved_meals/screens/saved_meals_page.dart';
+import 'package:habisin_mobile/app/main_shell.dart';
 
 /// Named route constants shared across application modules.
 abstract final class AppRoutes {

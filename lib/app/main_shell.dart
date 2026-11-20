@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habisin_mobile/models/plan.dart';
-import 'package:habisin_mobile/screens/home_screen.dart';
-import 'package:habisin_mobile/screens/planner_screen.dart';
+import 'package:habisin_mobile/features/planner/models/weekly_plan.dart';
+import 'package:habisin_mobile/features/home/home_screen.dart';
+import 'package:habisin_mobile/features/planner/screens/planner_screen.dart';
 
 const _recipesTab = 2;
 const _plannerTab = 3;

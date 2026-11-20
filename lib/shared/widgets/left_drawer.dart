@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
-import '../saved_meals/theme/saved_meals_colors.dart';
+import 'package:habisin_mobile/main.dart';
+import 'package:habisin_mobile/features/saved_meals/theme/saved_meals_colors.dart';
 
 /// Shared navigation drawer linking the home screen and module pages.
 class LeftDrawer extends StatelessWidget {
